@@ -6,7 +6,7 @@ function signIn(){
 
   const handleSubmit = () => {
       // Add authentication logic here
-      console.log('Username:      ', Email);
+      console.log('Username:', Email);
       console.log('Password:', password);
   };
 
@@ -21,6 +21,7 @@ function signIn(){
                       placeholder='example@example.com'
                       value={Email}
                       onChange={(e) => setEmail(e.target.value)}
+                      required
                   />
               </div>
               <div>
@@ -29,6 +30,7 @@ function signIn(){
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      required
                   />
               </div>
               <p></p>
