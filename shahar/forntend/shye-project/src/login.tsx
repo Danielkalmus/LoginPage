@@ -1,48 +1,53 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './login.css';
 
-function Login(){
+function Login() {
     const [Email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [Password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
     const handleSubmit = () => {
         // Add authentication logic here
         console.log('Username:      ', Email);
-        console.log('Password:', password);
+        console.log('Password:', Password);
     };
 
     return (
-        <div>
-            <h1>login</h1>
-            <form onSubmit={handleSubmit}>
-                <div className='form-login-user'>
-                    <label>Username: </label>
-                    <input
-                        type="text"
-                        placeholder='example@example.com'
-                        value={Email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password: </label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <p></p>
-                <button type="submit">Login</button>
-                <div>
-                    <p>Don't already have an account? </p>
-                </div>
-                <button type="button" onClick={() => navigate('/dashboard')}>Sign In</button>
-            </form>
+        <div className="container">
+            <div className="login-form">
+                <h1>SHYE</h1>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <div>
+                            <label>Username:</label>
+                            <input
+                                type="text"
+                                placeholder='johndoe@example.com'
+                                value={Email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Password:</label>
+                            <input
+                                type="Password"
+                                value={Password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <button type="submit">Login</button>
+                        </div>
+                        <div className="signup-container">
+                            <p>Don't already have an account? <button type="button" onClick={() => navigate('/dashboard')}>Sign Up</button></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
