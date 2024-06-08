@@ -13,7 +13,7 @@
   box-shadow: 0 0 10px rgba(116, 123, 255, 1);
   text-align: center;
   align-items: initial;
-  height: 430px;
+  height: 500px;
   width: 400px;
 }
 
@@ -32,7 +32,7 @@
   font-size: 1em;
   font-weight: 500;
   text-align: left;
-  margin-left: 10px;
+  margin-left: 5px;
   display: block;
   width: 100%;
 }
@@ -45,7 +45,10 @@
 
 .form-group .input-group {
   flex: 1;
-  margin-right: 10px;
+}
+
+.input-group:not(:last-child) {
+  margin-right: 8px;
 }
 
 .input-group label {
@@ -71,12 +74,33 @@
   outline: none;
 }
 
-p a {
+
+.error-container {
+  height: 20px; /* Reserve space for the error message */
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center; /* Center the error message horizontally */
+  align-items: center; /* Center the error message vertically */
+}
+
+.error-container .visible {
+  color: rgb(0, 255, 42);
+  font-size: 0.8em;
+}
+
+.error-container .invisible {
+  visibility: hidden; /* Hide the error message, but keep its space */
+}
+
+.option-login {
+  margin-top: 20px;
+}
+
+.option-login p a {
   font-weight: 500;
   color: #747bff;
   text-decoration: none;
 }
-
-p a:hover {
+.option-login p a:hover {
   text-decoration: underline;
 }
