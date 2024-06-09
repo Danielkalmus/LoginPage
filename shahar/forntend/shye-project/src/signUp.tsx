@@ -1,37 +1,78 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink, useNavigate } from 'react-router-dom';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './signUp.css'
 
-function signUp() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+interface FormValues {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+const SignUp: React.FC = () => {
+    const [formValues, setFormValues] = useState<FormValues>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const [errors, setErrors] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+
     const navigate = useNavigate()
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const { firstName, lastName, email, password, confirmPassword } = formValues;
 
         console.log('First Name:', firstName);
         console.log('Last Name:', lastName);
         console.log('Email:', email);
         console.log('Password:', password);
+        console.log('Confirm Password', confirmPassword);
 
         if (password.length < 8) {
-            setError('Password must be at least 8 characters long');
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                password: 'Password must be at least 8 characters long'
+            }));
             return;
         }
 
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
+        else if (password !== confirmPassword) {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                confirmPassword: "Passwords don't match"
+            }));
             return;
         }
 
-        setError('')
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }))
         navigate('/');
     };
 
@@ -45,9 +86,10 @@ function signUp() {
                             <label>First Name:</label>
                             <input
                                 type="text"
+                                name='firstName'
                                 placeholder='john'
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                value={formValues.firstName}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -55,9 +97,10 @@ function signUp() {
                             <label>Last Name:</label>
                             <input
                                 type="text"
+                                name='lastName'
                                 placeholder='doe'
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
+                                value={formValues.lastName}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -65,34 +108,47 @@ function signUp() {
                     <div className='form-group'>
                         <label>Email:</label>
                         <input
-                            type="text"
+                            type="email"
+                            name='email'
                             placeholder='johndoe@example.com'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={formValues.email}
+                            onChange={handleChange}
                             required
                         />
+                    </div>
+                    <div className='errors-container'>
+                        <p className={errors.email ? 'visible' : 'invisible'}>
+                            <FontAwesomeIcon icon={faCircleExclamation} /> {errors.email}
+                        </p>
                     </div>
                     <div className='form-group'>
                         <label>Password:</label>
                         <input
                             type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            name='password'
+                            value={formValues.password}
+                            onChange={handleChange}
                             required
                         />
+                    </div>
+                    <div className='errors-container'>
+                        <p className={errors.password ? 'visible' : 'invisible'}>
+                            <FontAwesomeIcon icon={faCircleExclamation} /> {errors.password}
+                        </p>
                     </div>
                     <div className='form-group'>
                         <label>Confirm Password:</label> {/* New confirm password field */}
                         <input
                             type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            name='confirmPassword'
+                            value={formValues.confirmPassword}
+                            onChange={handleChange}
                             required
                         />
                     </div>
-                    <div className='error-container'>
-                        <p className={error ? 'visible' : 'invisible'}>
-                            <FontAwesomeIcon icon={faCircleExclamation} /> {error}
+                    <div className='errors-container'>
+                        <p className={errors.confirmPassword ? 'visible' : 'invisible'}>
+                            <FontAwesomeIcon icon={faCircleExclamation} /> {errors.confirmPassword}
                         </p>
                     </div>
                     <button type="submit">Create Account</button>
@@ -105,4 +161,4 @@ function signUp() {
     );
 };
 
-export default signUp;
+export default SignUp;

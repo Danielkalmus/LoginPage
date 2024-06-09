@@ -58,10 +58,10 @@
 }
 
 .error-container {
-  height: 20px; /* Reserve space for the error message */
+  height: 20px;
   display: flex;
-  justify-content: center; /* Center the error message horizontally */
-  align-items: center; /* Center the error message vertically */
+  justify-content: center;
+  align-items: center;
 }
 
 .error-container .visible {
@@ -70,7 +70,7 @@
 }
 
 .error-container .invisible {
-  visibility: hidden; /* Hide the error message, but keep its space */
+  visibility: hidden;
 }
 
 .signup-container {
@@ -82,5 +82,23 @@
 }
 
 .signup-container button {
-  margin-top: 10px; /* Add margin-top for space between the button and the preceding paragraph */
+  margin-top: 10px;
+}
+
+
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container input {
+  width: 100%;
+  padding-right: 30px; /* Adjust padding to avoid overlapping with icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
 }

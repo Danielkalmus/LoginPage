@@ -1,26 +1,44 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './login.css';
 
-function Login() {
-    const [Email, setEmail] = useState('');
-    const [Password, setPassword] = useState('');
+interface FormValues {
+    email: string;
+    password: string;
+}
+
+const Login: React.FC = () => {
+    const [formValues, setFormValues] = useState<FormValues>({
+        email: '',
+        password: '',
+    });
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-        console.log('Username:', Email);
-        console.log('Password:', Password);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
 
-        if (Email === '' || Password === '') {
-            setError('Username and password are required');
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { email, password } = formValues;
+
+        console.log('Email:', email);
+        console.log('Password:', password);
+
+        if (email === '' || password === '') {
+            setError('Email and password are required');
             return;
         }
 
-        if (Password.length < 8) {
+        if (password.length < 8) {
             setError('Password must be at least 8 characters long');
             return;
         }
@@ -29,30 +47,37 @@ function Login() {
         navigate('/home');
     };
 
+
     return (
         <div className="container">
             <div className="login-form">
+
                 <h1>SHYE</h1>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <div>
-                            <label>Username:</label>
+                            <label>Email:</label>
                             <input
-                                type="text"
+                                type="email"
+                                name="email"
                                 placeholder='johndoe@example.com'
-                                value={Email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={formValues.email}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
                         <div>
                             <label>Password:</label>
-                            <input
-                                type="password"
-                                value={Password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
+                            <div className="password-input-container">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={formValues.password}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <FontAwesomeIcon icon={faEye} />
+                            </div>
                         </div>
                         <div className='error-container'>
                             <p className={error ? 'visible' : 'invisible'}>
