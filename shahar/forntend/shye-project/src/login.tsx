@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './login.css';
 
@@ -16,6 +18,7 @@ const Login: React.FC = () => {
         password: '',
     });
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,26 +29,21 @@ const Login: React.FC = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
+
+    const handleSubmit = async () => {
         const { email, password } = formValues;
-
-        console.log('Email:', email);
-        console.log('Password:', password);
-
-        if (email === '' || password === '') {
-            setError('Email and password are required');
-            return;
+        try {
+            const response = await axios.post('http://localhost:3000/api/login', { email, password });
+            console.log(response.data);
+            navigate('/home');
+        } catch (error) {
+            console.error('There was an error logging in!', error);
         }
-
-        if (password.length < 8) {
-            setError('Password must be at least 8 characters long');
-            return;
-        }
-
-        setError('');
-        navigate('/home');
     };
+
 
 
     return (
@@ -70,13 +68,15 @@ const Login: React.FC = () => {
                             <label>Password:</label>
                             <div className="password-input-container">
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     name="password"
                                     value={formValues.password}
                                     onChange={handleChange}
                                     required
                                 />
-                                <FontAwesomeIcon icon={faEye} />
+                                <button type='button' onClick={togglePasswordVisibility}>
+                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                                </button>
                             </div>
                         </div>
                         <div className='error-container'>
@@ -95,6 +95,6 @@ const Login: React.FC = () => {
             </div>
         </div>
     );
-};
 
+}
 export default Login;

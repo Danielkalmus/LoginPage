@@ -93,12 +93,26 @@
 }
 
 .password-input-container input {
-  width: 100%;
-  padding-right: 30px; /* Adjust padding to avoid overlapping with icon */
+  margin-left: 5px;
 }
 
-.eye-icon {
-  position: absolute;
-  right: 10px;
+.password-input-container button {
+  background: none;
+  border: none;
   cursor: pointer;
+  transform: translateY(-50%);
+  position: absolute;
+  top: 20%;
+  right: 5px;
+  width: auto;
+  height: auto;
+  align-self: center;
+}
+
+.password-input-container button:hover {
+  background-color: transparent;
+}
+.password-input-container button:focus,
+button:focus-visible {
+  outline: transparent;
 }
