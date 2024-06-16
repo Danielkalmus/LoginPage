@@ -74,8 +74,7 @@
 
 
 .errors-container {
-  height: 10px; /* Reserve space for the error message */
-  margin-bottom: 10px;
+  height: 20px; /* Reserve space for the error message */
   display: flex;
   justify-content: flex-start; /* Align the error message to the left */
   align-items: center; /* Center the error message vertically */
@@ -105,6 +104,8 @@
   text-decoration: underline;
 }
 
-button {
+.sign-up-form button {
   margin-top: 20px;
+  width: 200px;
+  align-self: center;
 }

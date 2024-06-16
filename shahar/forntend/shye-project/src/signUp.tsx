@@ -49,6 +49,15 @@ const SignUp: React.FC = () => {
         console.log('Password:', password);
         console.log('Confirm Password', confirmPassword);
 
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }))
+
         if (password.length < 8) {
             setErrors(prevErrors => ({
                 ...prevErrors,
