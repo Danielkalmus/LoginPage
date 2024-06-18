@@ -9,6 +9,13 @@
 }
 
 .success-screen h1 {
-    margin-bottom: 20px;
     color: #646cff;
+    font-size: 34px;
+    margin-bottom: 5px;
+}
+
+.success-screen p {
+    font-size: 16px;
+    margin-top: 0px;
+    margin-bottom: 20px;
 }

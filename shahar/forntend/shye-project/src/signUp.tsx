@@ -82,7 +82,7 @@ const SignUp: React.FC = () => {
         setTimeout(() => {
           setShowSuccess(false);
           navigate('/');
-        }, 2000);
+        }, 3000);
       } else {
         const data = await response.json();
 
