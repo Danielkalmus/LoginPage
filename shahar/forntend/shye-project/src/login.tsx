@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { faCircleExclamation, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './login.css';
@@ -40,24 +40,30 @@ const Login: React.FC = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/api/auth/login', {
-                method: 'POST',
+            const response = await axios.post('http://localhost:3001/api/auth/login', {
+                email,
+                password
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
             });
-    
-            const data = await response.json();
-    
-            if (response.ok) {
+
+            console.log(response.status)
+            if (response.status) {
                 setError('');
-                navigate('/home');
+                navigate('/home', { state: { email } }); // Pass email as state
             } else {
-                setError(data.message || 'An error occurred');
+                setError(response.data.message || 'An error occurred');
             }
-        } catch (error) {
-            setError('An error occurred');
+        } catch (error: unknown) {
+            const axiosError = error as AxiosError;
+
+            if (axiosError.response && axiosError.response.data && (axiosError.response.data as any).message) {
+                setError((axiosError.response.data as any).message);
+            } else {
+                setError('An error occurred');
+            }
         }
     };
 

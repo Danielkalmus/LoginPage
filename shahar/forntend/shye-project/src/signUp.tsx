@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './signUp.css';
@@ -12,6 +12,10 @@ interface FormValues {
   email: string;
   password: string;
   confirmPassword: string;
+}
+
+interface ErrorResponse {
+  message: string;
 }
 
 const SignUp: React.FC = () => {
@@ -69,35 +73,39 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/signup', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:3001/api/auth/signup', {
+        firstName,
+        lastName,
+        email,
+        password
+      }, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
-      if (response.ok) {
+      if (response.status) {
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
           navigate('/');
         }, 3000);
       } else {
-        const data = await response.json();
-
         setErrors(prevErrors => ({
           ...prevErrors,
-          email: data.message || 'An error occurred'
+          email: response.data.message || 'An error occurred'
         }));
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+
+      const errorMessage = axiosError.response?.data?.message ?? 'An error occurred';
       setErrors(prevErrors => ({
         ...prevErrors,
-        email: 'An error occurred'
+        email: errorMessage
       }));
     }
-  };
+  }
 
   return (
     <div className="container">
@@ -188,6 +196,5 @@ const SignUp: React.FC = () => {
       )}
     </div>
   );
-};
-
+}
 export default SignUp;

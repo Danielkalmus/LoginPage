@@ -13,29 +13,38 @@ router.post('/login', async (req, res) => {
     if (rows.length > 0) {
       res.json({ success: true });
     } else {
-      res.status(401).json({ success: false, message: 'Invalid credentials' });
+      res.status(401).json({ success: false, message: 'Incorrect email or password' });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  }  catch (err) {
+    res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
   }
 });
 
 router.post('/signup', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   try {
+    // Check if email already exists
+    const [emailRows] = await pool.query(
+      'SELECT user_email FROM s_training_db.users WHERE user_email = ?',
+      [email]
+    );
+
+    if (emailRows.length > 0) {
+      // Email already exists, return conflict status
+      return res.status(409).json({ success: false, message: 'An account already exists with this email address' });
+    }
+
+    // Email does not exist, proceed with registration
     await pool.query(
-      'INSERT INTO s_training_db.users (user_email, user_password, user_first_name, user_last_name) VALUES (?, ?, ?, ?);',
+      'INSERT INTO s_training_db.users (user_email, user_password, user_first_name, user_last_name) VALUES (?, ?, ?, ?)',
       [email, password, firstName, lastName]
     );
+
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    // Handle any errors during query execution
+    res.status(500).json({ success: false, message: 'Internal Server Error', error: err.message });
   }
 });
-
-/*
-router.post('/home/:user', (req, res) => {
-  const { user } = req.params;
-})*/
 
 export default router;
