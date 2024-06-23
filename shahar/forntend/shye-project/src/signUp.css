@@ -1,0 +1,111 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+.sign-up-form {
+  background-color: rgba(98, 105, 111, 0.158);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(116, 123, 255, 1);
+  align-items: initial;
+  height: 500px;
+  width: 400px;
+}
+
+.sign-up-form h1 {
+  color: #747bff;
+}
+
+.sign-up-form form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sign-up-form form label {
+  font-size: 1em;
+  font-weight: 500;
+  text-align: left;
+  margin-left: 5px;
+  display: block;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.form-group .input-group {
+  flex: 1;
+}
+
+.input-group:not(:last-child) {
+  margin-right: 8px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input,
+.form-group input {
+  border-radius: 4px;
+  border: 2px solid transparent;
+  width: 100%;
+  padding: 4px;
+  margin-bottom: 0px;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  color: #747bff;
+}
+
+.sign-up-form input:focus {
+  border-width: 2px;
+  border-color: #747bff;
+  outline: none;
+}
+
+
+.errors-container {
+  height: 20px; /* Reserve space for the error message */
+  display: flex;
+  justify-content: flex-start; /* Align the error message to the left */
+  align-items: center; /* Center the error message vertically */
+  margin-left: 5px; /* Adjust margin as needed */
+}
+
+.errors-container .visible {
+  color: #cc000d;
+  font-size: 0.7em;
+  text-align: left; /* Ensure text alignment is left */
+}
+
+.errors-container .invisible {
+  visibility: hidden; /* Hide the error message, but keep its space */
+}
+
+.option-login {
+  margin-top: 20px;
+}
+
+.option-login p a {
+  font-weight: 500;
+  color: #747bff;
+  text-decoration: none;
+}
+.option-login p a:hover {
+  text-decoration: underline;
+}
+
+.sign-up-form button {
+  margin-top: 20px;
+  width: 200px;
+  align-self: center;
+}
