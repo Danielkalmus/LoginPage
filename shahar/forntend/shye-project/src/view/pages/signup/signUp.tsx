@@ -4,11 +4,12 @@ import axios, { AxiosError } from 'axios';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './signUp.css';
-import SuccessScreen from './successScreen';
+import SuccessScreen from '../../../successScreen';
 
 interface FormValues {
   firstName: string;
   lastName: string;
+  birthday: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -22,6 +23,7 @@ const SignUp: React.FC = () => {
   const [formValues, setFormValues] = useState<FormValues>({
     firstName: '',
     lastName: '',
+    birthday: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -30,6 +32,7 @@ const SignUp: React.FC = () => {
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
+    birthday: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -39,27 +42,81 @@ const SignUp: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const isHebrew = (text: string) => /^[\u0590-\u05FF\s]+$/.test(text);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
+
+    if (name === 'firstName' && !isHebrew(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, firstName: 'First name must be in Hebrew' }));
+    } else if (name === 'firstName') {
+      setErrors((prevErrors) => ({ ...prevErrors, firstName: '' }));
+    }
+
+    if (name === 'lastName' && !isHebrew(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, lastName: 'Last name must be in Hebrew' }));
+    } else if (name === 'lastName') {
+      setErrors((prevErrors) => ({ ...prevErrors, lastName: '' }));
+    }
+    if (name === 'birthday') {
+      const birthDate = new Date(value);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+
+      if (age < 10) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          birthday: 'You must be at least 10 years old to sign up'
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          birthday: ''
+        }));
+      }
+    }
+    if (name === 'password' && value.length > 6) {
+      setErrors((prevErrors) => ({ ...prevErrors, password: 'Password must have up to 6 characters' }));
+    } else if (name === 'password') {
+      setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+    }
+
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { firstName, lastName, email, password, confirmPassword } = formValues;
+    const { firstName, lastName, birthday, email, password, confirmPassword } = formValues;
 
     setErrors({
       firstName: '',
       lastName: '',
+      birthday: '',
       email: '',
       password: '',
       confirmPassword: ''
     });
 
-    if (password.length < 8) {
+    if (!isHebrew(firstName)) {
       setErrors(prevErrors => ({
         ...prevErrors,
-        password: 'Password must be at least 8 characters long'
+        firstName: 'First name must be in Hebrew'
+      }));
+      return;
+    }
+
+    if (!isHebrew(lastName)) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        lastName: 'Last name must be in Hebrew'
+      }));
+      return;
+    }
+
+    if (password.length > 6) {
+      setErrors(prevErrors => ({
+        ...prevErrors,
+        password: 'Password must have up to 6 characters'
       }));
       return;
     }
@@ -76,6 +133,7 @@ const SignUp: React.FC = () => {
       const response = await axios.post('http://localhost:3001/api/auth/signup', {
         firstName,
         lastName,
+        birthday,
         email,
         password
       }, {
@@ -126,6 +184,11 @@ const SignUp: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
+                <div className="errors-container">
+                  <p className={errors.firstName ? 'visible' : 'invisible'}>
+                    <FontAwesomeIcon icon={faCircleExclamation} /> {errors.firstName}
+                  </p>
+                </div>
               </div>
               <div className="input-group">
                 <label>Last Name:</label>
@@ -137,7 +200,27 @@ const SignUp: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
+                <div className="errors-container">
+                  <p className={errors.lastName ? 'visible' : 'invisible'}>
+                    <FontAwesomeIcon icon={faCircleExclamation} /> {errors.lastName}
+                  </p>
+                </div>
               </div>
+            </div>
+            <div className="form-group">
+              <label>Birthday:</label>
+              <input
+                type="date"
+                name="birthday"
+                value={formValues.birthday}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="errors-container">
+              <p className={errors.birthday ? 'visible' : 'invisible'}>
+                <FontAwesomeIcon icon={faCircleExclamation} /> {errors.birthday}
+              </p>
             </div>
             <div className="form-group">
               <label>Email:</label>
