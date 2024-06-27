@@ -44,44 +44,48 @@ const SignUp: React.FC = () => {
 
   const isHebrew = (text: string) => /^[\u0590-\u05FF\s]+$/.test(text);
 
+  const validateForm = (name: keyof FormValues, value: string) => {
+    let error = '';
+
+    switch (name) {
+      case 'firstName':
+      case 'lastName':
+        if (!isHebrew(value)) {
+          error = `${name === 'firstName' ? 'First' : 'Last'} name must be in Hebrew`;
+        }
+        break;
+      case 'birthday':
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        if (age < 10) {
+          error = 'You must be at least 10 years old to sign up';
+        }
+        break;
+      case 'password':
+        if (value.length > 6) {
+          error = 'Password must have up to 6 characters';
+        }
+        break;
+      case 'confirmPassword':
+        if (value !== formValues.password) {
+          error = "Passwords don't match";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
-
-    if (name === 'firstName' && !isHebrew(value)) {
-      setErrors((prevErrors) => ({ ...prevErrors, firstName: 'First name must be in Hebrew' }));
-    } else if (name === 'firstName') {
-      setErrors((prevErrors) => ({ ...prevErrors, firstName: '' }));
-    }
-
-    if (name === 'lastName' && !isHebrew(value)) {
-      setErrors((prevErrors) => ({ ...prevErrors, lastName: 'Last name must be in Hebrew' }));
-    } else if (name === 'lastName') {
-      setErrors((prevErrors) => ({ ...prevErrors, lastName: '' }));
-    }
-    if (name === 'birthday') {
-      const birthDate = new Date(value);
-      const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
-
-      if (age < 10) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          birthday: 'You must be at least 10 years old to sign up'
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          birthday: ''
-        }));
-      }
-    }
-    if (name === 'password' && value.length > 6) {
-      setErrors((prevErrors) => ({ ...prevErrors, password: 'Password must have up to 6 characters' }));
-    } else if (name === 'password') {
-      setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
-    }
-
+    validateForm(name as keyof FormValues, value);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,35 +101,13 @@ const SignUp: React.FC = () => {
       confirmPassword: ''
     });
 
-    if (!isHebrew(firstName)) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        firstName: 'First name must be in Hebrew'
-      }));
-      return;
+
+    for (const key in formValues) {
+      validateForm(key as keyof FormValues, formValues[key as keyof FormValues]);
     }
 
-    if (!isHebrew(lastName)) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        lastName: 'Last name must be in Hebrew'
-      }));
-      return;
-    }
 
-    if (password.length > 6) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        password: 'Password must have up to 6 characters'
-      }));
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        confirmPassword: "Passwords don't match"
-      }));
+    if (Object.values(errors).some(error => error !== '')) {
       return;
     }
 

@@ -21,7 +21,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, birthday } = req.body;
   try {
     // Check if email already exists
     const [emailRows] = await pool.query(
@@ -36,8 +36,8 @@ router.post('/signup', async (req, res) => {
 
     // Email does not exist, proceed with registration
     await pool.query(
-      'INSERT INTO s_training_db.users (user_email, user_password, user_first_name, user_last_name) VALUES (?, ?, ?, ?)',
-      [email, password, firstName, lastName]
+      'INSERT INTO s_training_db.users (user_email, user_password, user_first_name, user_last_name, user_birthday) VALUES (?, ?, ?, ?, ?)',
+      [email, password, firstName, lastName, birthday]
     );
 
     res.json({ success: true });

@@ -29,16 +29,6 @@ const Login: React.FC = () => {
         e.preventDefault();
         const { email, password } = formValues;
 
-        if (email === '' || password === '') {
-            setError('Username and password are required');
-            return;
-        }
-
-        if (password.length >= 6) {
-            setError('Password must have up to 6 characters');
-            return;
-        }
-
         try {
             const response = await axios.post('http://localhost:3001/api/auth/login', {
                 email,
