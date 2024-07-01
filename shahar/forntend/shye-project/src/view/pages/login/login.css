@@ -46,8 +46,7 @@
 }
 
 .login-form input:focus {
-  border-width: 2px;
-  border-color: #646cff;
+  border: 2px solid #646cff;
   outline: none;
 }
 
@@ -55,10 +54,19 @@
   margin-bottom: 0px;
 }
 
+.input.invalid {
+  border: 2px solid red;
+}
+
 .login-form button {
   width: 50%;
   padding: 10px;
   margin-top: 7px;
+}
+
+.login-button.valid {
+  background-color: #646cff;
+  cursor: pointer;
 }
 
 .error-container {

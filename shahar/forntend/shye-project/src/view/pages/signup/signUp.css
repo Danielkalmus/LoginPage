@@ -12,7 +12,7 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(116, 123, 255, 1);
   align-items: initial;
-  height: 500px;
+  height: 600px;
   width: 400px;
 }
 
@@ -45,7 +45,7 @@
   flex: 1;
 }
 
-.input-group:not(:last-child) {
+.input-group:not(:last-child){
   margin-right: 8px;
 }
 
@@ -71,7 +71,6 @@
   border-color: #747bff;
   outline: none;
 }
-
 
 .errors-container {
   height: 20px; /* Reserve space for the error message */
