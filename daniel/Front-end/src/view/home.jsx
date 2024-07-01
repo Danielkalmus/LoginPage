@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
-  const handleLogOut = () => {
-    navigate("/");
-  };
 
   return (
     <div>
       <h1>Home page</h1>
-      <h2>you successfully signed in</h2>
-      <button onClick={handleLogOut}>LogOut</button>
+      <h2>You successfully signed in</h2>
+      <button onClick={() => navigate("/")}>LogOut</button>
     </div>
   );
 }
