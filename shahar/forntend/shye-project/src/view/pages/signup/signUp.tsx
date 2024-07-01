@@ -62,8 +62,14 @@ const SignUp: React.FC = () => {
           error = 'You must be at least 10 years old to sign up';
         }
         break;
+       case 'email':
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(value)) {
+        error = 'Invalid email';
+      }
+      break;
       case 'password':
-        if (value.length > 6) {
+        if (value.length < 0 || value.length > 6) {
           error = 'Password must have up to 6 characters';
         }
         break;
@@ -101,15 +107,13 @@ const SignUp: React.FC = () => {
       confirmPassword: ''
     });
 
-
     for (const key in formValues) {
       validateForm(key as keyof FormValues, formValues[key as keyof FormValues]);
-    }
-
+    } // checks validity of each input
 
     if (Object.values(errors).some(error => error !== '')) {
       return;
-    }
+    } // if any has returned an error -> return -- meaning the form won't be sent
 
     try {
       const response = await axios.post('http://localhost:3001/api/auth/signup', {
