@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Login from "./view/login/Login";
-import Home from "./view/Home";
-import Welcome from "./view/login/Welcome";
-import Users from "./view/Users";
-import Register from "./view/login/Register";
+import Login from "./view/login/login";
+import Home from "./view/home";
+import Welcome from "./view/login/welcome";
+import Users from "./view/users";
+import Register from "./view/login/register";
 
 function App() {
   return (
