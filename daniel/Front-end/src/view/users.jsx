@@ -3,57 +3,49 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Users() {
-  const navigate = useNavigate();
-
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-
-  const goBack = () => {
-    navigate("/");
-  }
-
-  const showUsers = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/users");
-      console.log("Response data:", response.data);
-
-      if (Array.isArray(response.data.result)) {
-        setUsers(response.data.result);
-      } else {
-        throw new Error("Data is not an array");
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Error showing users");
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    showUsers();
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/users");
+        if (Array.isArray(response.data.result)) {
+          setUsers(response.data.result);
+        } else {
+          throw new Error("Data is not an array");
+        }
+      } catch (error) {
+        setError("Error showing users");
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   return (
     <div>
-        <button onClick={goBack}>Go back</button>
+      <button onClick={() => navigate("/")}>Go back</button>
       {error && <p>{error}</p>}
-      <ul>
-        <h3>Users ID</h3>
-        {users.map((user) => (
-          <li key={user.ID}>{user.ID}</li>
-        ))}
-      </ul>
-      <ul>
-        <h3>Users Email</h3>
-        {users.map((user) => (
-          <li key={user.ID}>{user.email}</li>
-        ))}
-      </ul>
-      <ul>
-        <h3>Users Password</h3>
-        {users.map((user) => (
-          <li key={user.ID}>{user.password}</li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Password</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.ID}</td>
+              <td>{user.email}</td>
+              <td>{user.password}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
