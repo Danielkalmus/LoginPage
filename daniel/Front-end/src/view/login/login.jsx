@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ArrowButton from "../components/ArrowButton";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,9 @@ function Login() {
         email,
         password,
       });
-      navigate("/home");
+
+      const { id, firstName, lastName } = response.data;
+      navigate("/home", { state: { firstName, lastName, id } });
     } catch (error) {
       if (
         error.response &&
@@ -31,6 +34,11 @@ function Login() {
 
   return (
     <div>
+      <ArrowButton />
+      <img
+        src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/password-143.png"
+        alt="lock"
+      />
       <h2>Login Page</h2>
       <input
         placeholder="Email"
