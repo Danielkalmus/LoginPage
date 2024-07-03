@@ -6,6 +6,7 @@ import Home from "./view/home";
 import Welcome from "./view/login/welcome";
 import Users from "./view/users";
 import Register from "./view/login/register";
+import ChangePassword from "./view/login/changePassword";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/users" element={<Users />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/changePassword" element={<ChangePassword />} />
       </Routes>
     </BrowserRouter>
   );

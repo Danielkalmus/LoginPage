@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import ArrowButton from "../view/components/ArrowButton";
+import { format } from "date-fns";
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -26,22 +26,33 @@ function Users() {
 
   return (
     <div>
-      <button onClick={() => navigate("/")}>Go back</button>
+      <ArrowButton />
       {error && <p>{error}</p>}
+      <img
+        src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/personal-information-13.png"
+        alt="users"
+      />
+      <h2>Users List</h2>
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Email</th>
             <th>Password</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date Of Birth</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.ID}</td>
+              <td>{user.id}</td>
               <td>{user.email}</td>
               <td>{user.password}</td>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{format(new Date(user.dateOfBirth), "dd/MM/yyyy")}</td>
             </tr>
           ))}
         </tbody>
