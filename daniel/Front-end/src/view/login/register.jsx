@@ -11,7 +11,25 @@ function Register() {
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [error, setError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+
   const navigate = useNavigate();
+
+  const calculateAge = (dob) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+    return age;
+  };
 
   const handleCreation = async (e) => {
     e.preventDefault();
@@ -47,6 +65,11 @@ function Register() {
       return;
     }
 
+    if (calculateAge(dateOfBirth) < 18) {
+      setError("You must be at least 18 years old to register");
+      return;
+    }
+
     try {
       await axios.post("http://localhost:3000/register", {
         email,
@@ -58,6 +81,26 @@ function Register() {
       navigate("/");
     } catch (error) {
       setError(error.response ? error.response.data : "Error creating account");
+    }
+  };
+
+  const validateFirstName = (name) => {
+    if (!name) {
+      setFirstNameError("");
+    } else if (!/^[א-ת]+$/.test(name)) {
+      setFirstNameError("First name can only contain Hebrew letters");
+    } else {
+      setFirstNameError("");
+    }
+  };
+
+  const validateLastName = (name) => {
+    if (!name) {
+      setLastNameError("");
+    } else if (!/^[א-ת]+$/.test(name)) {
+      setLastNameError("Last name can only contain Hebrew letters");
+    } else {
+      setLastNameError("");
     }
   };
 
@@ -74,16 +117,24 @@ function Register() {
         <input
           placeholder="First Name"
           value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+            validateFirstName(e.target.value);
+          }}
           required
         />
+        {firstNameError && <p style={{ color: "red" }}>{firstNameError}</p>}
         <br />
         <input
           placeholder="Last Name"
           value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          onChange={(e) => {
+            setLastName(e.target.value);
+            validateLastName(e.target.value);
+          }}
           required
         />
+        {lastNameError && <p style={{ color: "red" }}>{lastNameError}</p>}
         <br />
         <input
           placeholder="Date Of Birth"
