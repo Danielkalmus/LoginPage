@@ -116,7 +116,7 @@ const SignUp: React.FC = () => {
     } // if any has returned an error -> return -- meaning the form won't be sent
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/signup', {
+      const response = await axios.post('http://localhost:3001/api/user', {
         firstName,
         lastName,
         birthday,

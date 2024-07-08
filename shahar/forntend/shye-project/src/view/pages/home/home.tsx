@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 
 interface User {
-    user_first_name: string;
-    user_last_name: string;
-    user_email: string;
-    user_birthday: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    birthday: string;
+    password: string;
 }
 
 const Home: React.FC = () => {
@@ -22,7 +23,7 @@ const Home: React.FC = () => {
             });
 
             if (response.status === 200) {
-                setUser(response.data[0]);
+                setUser(response.data);
             } else {
                 setError(response.data.message || 'An error occurred');
             }
@@ -44,7 +45,10 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            <h1>היוש {user && user.user_first_name + " " + user.user_last_name}</h1>
+            <h1>היוש {user && user.first_name + " " + user.last_name}</h1>
+            <div>
+                <button type="submit">Edit Account</button>
+            </div>
         </div>
     );
 };
