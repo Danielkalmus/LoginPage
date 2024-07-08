@@ -6,6 +6,9 @@ import { format } from "date-fns";
 function Users() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [searchedEmail, setSearchedEmail] = useState("");
+  const [sortByYoungToOld, setSortByYoungToOld] = useState(false);
+  const [sortByOldToYoung, setSortByOldToYoung] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,6 +27,41 @@ function Users() {
     fetchUsers();
   }, []);
 
+  const calculateAge = (dateOfBirth) => {
+    const birthDate = new Date(dateOfBirth);
+    const ageDiff = Date.now() - birthDate.getTime();
+    const ageDate = new Date(ageDiff);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
+  const handleSortYoungToOld = () => {
+    setSortByYoungToOld((prevSortByYoungToOld) => !prevSortByYoungToOld);
+    if (sortByOldToYoung) setSortByOldToYoung(false);
+  };
+
+  const handleSortOldToYoung = () => {
+    setSortByOldToYoung((prevSortByOldToYoung) => !prevSortByOldToYoung);
+    if (sortByYoungToOld) setSortByYoungToOld(false);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.email.toLowerCase().includes(searchedEmail.toLowerCase())
+  );
+
+  const sortedUsers = sortByYoungToOld
+    ? [...filteredUsers].sort((a, b) => {
+        const ageA = calculateAge(a.dateOfBirth);
+        const ageB = calculateAge(b.dateOfBirth);
+        return ageA - ageB;
+      })
+    : sortByOldToYoung
+    ? [...filteredUsers].sort((a, b) => {
+        const ageA = calculateAge(a.dateOfBirth);
+        const ageB = calculateAge(b.dateOfBirth);
+        return ageB - ageA;
+      })
+    : filteredUsers;
+
   return (
     <div>
       <ArrowButton />
@@ -33,6 +71,21 @@ function Users() {
         alt="users"
       />
       <h2>Users List</h2>
+      <input
+        type="text"
+        placeholder="🔍Search"
+        value={searchedEmail}
+        onChange={(e) => setSearchedEmail(e.target.value)}
+        required
+      />
+      <div>
+        <button onClick={handleSortYoungToOld} disabled={sortByOldToYoung}>
+          {sortByYoungToOld ? "Unsort Young to Old" : "Sort Young to Old"}
+        </button>
+        <button onClick={handleSortOldToYoung} disabled={sortByYoungToOld}>
+          {sortByOldToYoung ? "Unsort Old to Young" : "Sort Old to Young"}
+        </button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -45,7 +98,7 @@ function Users() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {sortedUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.email}</td>
