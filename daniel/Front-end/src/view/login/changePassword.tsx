@@ -3,16 +3,22 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowButton from "../components/ArrowButton";
 
-function ChangePassword() {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [error, setError] = useState("");
+interface LocationState {
+  firstName: string;
+  lastName: string;
+  id: number;
+}
+
+const ChangePassword: React.FC = () => {
+  const [oldPassword, setOldPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation<LocationState>();
   const { firstName, lastName, id } = location.state;
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setError("");
 
@@ -79,6 +85,6 @@ function ChangePassword() {
       </form>
     </div>
   );
-}
+};
 
 export default ChangePassword;
