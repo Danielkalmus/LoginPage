@@ -8,7 +8,7 @@ import Users from "./view/users";
 import Register from "./view/login/register";
 import ChangePassword from "./view/login/changePassword";
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>

@@ -2,10 +2,16 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowButton from "./components/ArrowButton";
 
-function Home() {
+interface LocationState {
+  firstName: string;
+  lastName: string;
+  id: number;
+}
+
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { firstName, lastName, id } = location.state;
+  const { firstName, lastName, id } = location.state as LocationState;
 
   return (
     <div>

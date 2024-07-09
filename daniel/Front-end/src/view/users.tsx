@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ArrowButton from "../view/components/ArrowButton";
+import ArrowButton from "./components/ArrowButton";
 import { format } from "date-fns";
 
-function Users() {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
-  const [searchedEmail, setSearchedEmail] = useState("");
-  const [sortByYoungToOld, setSortByYoungToOld] = useState(false);
-  const [sortByOldToYoung, setSortByOldToYoung] = useState(false);
+interface User {
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+}
+
+const Users: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [searchedEmail, setSearchedEmail] = useState<string>("");
+  const [sortByYoungToOld, setSortByYoungToOld] = useState<boolean>(false);
+  const [sortByOldToYoung, setSortByOldToYoung] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/users");
+        const response = await axios.get<{ result: User[] }>("http://localhost:3000/users");
         if (Array.isArray(response.data.result)) {
           setUsers(response.data.result);
         } else {
@@ -27,19 +36,19 @@ function Users() {
     fetchUsers();
   }, []);
 
-  const calculateAge = (dateOfBirth) => {
+  const calculateAge = (dateOfBirth: string): number => {
     const birthDate = new Date(dateOfBirth);
     const ageDiff = Date.now() - birthDate.getTime();
     const ageDate = new Date(ageDiff);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
-  const handleSortYoungToOld = () => {
+  const handleSortYoungToOld = (): void => {
     setSortByYoungToOld((prevSortByYoungToOld) => !prevSortByYoungToOld);
     if (sortByOldToYoung) setSortByOldToYoung(false);
   };
 
-  const handleSortOldToYoung = () => {
+  const handleSortOldToYoung = (): void => {
     setSortByOldToYoung((prevSortByOldToYoung) => !prevSortByOldToYoung);
     if (sortByYoungToOld) setSortByYoungToOld(false);
   };
@@ -112,6 +121,6 @@ function Users() {
       </table>
     </div>
   );
-}
+};
 
 export default Users;

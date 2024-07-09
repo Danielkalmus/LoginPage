@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const ArrowButton = () => {
+const ArrowButton: React.FC = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -11,15 +11,15 @@ const ArrowButton = () => {
   return (
     <button onClick={handleClick} style={styles}>
       <img
-        style={{height:'40px', width:'60px'}}
+        style={{ height: "40px", width: "60px" }}
         src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/return-149.png"
         alt="arrow"
-      />{" "}
+      />
     </button>
   );
 };
 
-const styles = {
+const styles: React.CSSProperties = {
   position: "fixed",
   left: "50px",
   top: "50px",
