@@ -79,7 +79,7 @@ const Register: React.FC = () => {
         dateOfBirth,
       });
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       setError(error.response ? error.response.data : "Error creating account");
     }
   };
