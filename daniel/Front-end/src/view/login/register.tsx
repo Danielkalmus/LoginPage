@@ -50,8 +50,8 @@ const Register: React.FC = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long");
+    if (password.length > 6) {
+      setError("Password must be at most 6 characters long");
       return;
     }
 
