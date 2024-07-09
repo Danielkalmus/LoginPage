@@ -103,6 +103,27 @@ app.post('/changePassword', (req: Request, res: Response) => {
   });
 });
 
+// Endpoint to delete user account
+app.post('/delete-account', (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send('Email and password are required');
+  }
+
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err: QueryError | null, result: any) => {
+    if (err) return res.status(500).send('Error querying user');
+    if (result.length === 0) return res.status(404).send('User not found');
+
+    if (password !== result[0].password) return res.status(401).send('Password incorrect');
+
+    db.query('DELETE FROM users WHERE email = ?', [email], (err: QueryError | null) => {
+      if (err) return res.status(500).send('Error deleting user');
+      res.status(200).send('User account deleted successfully');
+    });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

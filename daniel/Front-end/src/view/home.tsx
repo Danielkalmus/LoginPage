@@ -23,6 +23,7 @@ const Home: React.FC = () => {
       <h1>Home page</h1>
       <h2>Welcome, {firstName} {lastName}!</h2>
       <button onClick={() => navigate("/changePassword", { state: { firstName, lastName, id } })}>Change Password</button><br />
+      <button onClick={() => navigate("/DeleteAccount", { state: { firstName, lastName, id } })}>Delete Account</button><br />
       <button onClick={() => navigate("/")}>Log Out</button>
     </div>
   );
