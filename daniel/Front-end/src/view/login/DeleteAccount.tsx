@@ -13,7 +13,7 @@ const DeleteAccount: React.FC = () => {
       await axios.post('http://localhost:3000/delete-account', { email, password });
       alert('Account deleted successfully');
       navigate('/'); // Redirect to home page or login page after deletion
-    } catch (error) {
+    } catch (error: any) {
       if (error.response) {
         setErrorMessage(error.response.data);
       } else {

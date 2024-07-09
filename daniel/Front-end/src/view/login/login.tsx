@@ -24,7 +24,7 @@ const Login: React.FC = () => {
 
       const { id, firstName, lastName } = response.data;
       navigate("/home", { state: { firstName, lastName, id } });
-    } catch (error) {
+    } catch (error: any) {
       if (
         error.response &&
         (error.response.status === 404 || error.response.status === 401)
