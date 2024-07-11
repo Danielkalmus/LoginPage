@@ -7,8 +7,9 @@ import Welcome from "./view/login/welcome";
 import Users from "./view/users";
 import Register from "./view/login/register";
 import ChangePassword from "./view/login/changePassword";
+import DeleteAccount from "./view/login/DeleteAccount";
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -18,6 +19,7 @@ function App() {
         <Route path="/users" element={<Users />} />
         <Route path="/register" element={<Register />} />
         <Route path="/changePassword" element={<ChangePassword />} />
+        <Route path="/DeleteAccount" element={<DeleteAccount />} />
       </Routes>
     </BrowserRouter>
   );

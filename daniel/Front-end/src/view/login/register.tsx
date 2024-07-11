@@ -3,20 +3,20 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ArrowButton from "../components/ArrowButton";
 
-function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [error, setError] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
+const Register: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [firstNameError, setFirstNameError] = useState<string>("");
+  const [lastNameError, setLastNameError] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const calculateAge = (dob) => {
+  const calculateAge = (dob: string): number => {
     const birthDate = new Date(dob);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -31,7 +31,7 @@ function Register() {
     return age;
   };
 
-  const handleCreation = async (e) => {
+  const handleCreation = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
@@ -51,7 +51,7 @@ function Register() {
     }
 
     if (password.length > 6) {
-      setError("Password must be up to 6 characters");
+      setError("Password must be at most 6 characters long");
       return;
     }
 
@@ -79,12 +79,12 @@ function Register() {
         dateOfBirth,
       });
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       setError(error.response ? error.response.data : "Error creating account");
     }
   };
 
-  const validateFirstName = (name) => {
+  const validateFirstName = (name: string) => {
     if (!name) {
       setFirstNameError("");
     } else if (!/^[א-ת]+$/.test(name)) {
@@ -94,7 +94,7 @@ function Register() {
     }
   };
 
-  const validateLastName = (name) => {
+  const validateLastName = (name: string) => {
     if (!name) {
       setLastNameError("");
     } else if (!/^[א-ת]+$/.test(name)) {
@@ -172,6 +172,6 @@ function Register() {
       </form>
     </div>
   );
-}
+};
 
 export default Register;

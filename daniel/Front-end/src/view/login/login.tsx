@@ -3,22 +3,28 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ArrowButton from "../components/ArrowButton";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+interface LoginResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (): Promise<void> => {
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post<LoginResponse>("http://localhost:3000/login", {
         email,
         password,
       });
 
       const { id, firstName, lastName } = response.data;
       navigate("/home", { state: { firstName, lastName, id } });
-    } catch (error) {
+    } catch (error: any) {
       if (
         error.response &&
         (error.response.status === 404 || error.response.status === 401)
@@ -63,6 +69,6 @@ function Login() {
       </a>
     </div>
   );
-}
+};
 
 export default Login;
