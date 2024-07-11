@@ -64,6 +64,29 @@ app.post('/register', (req: Request, res: Response) => {
   );
 });
 
+app.post('/UsersGenerator', (req: Request, res: Response) => {
+  const users = req.body;
+  if (!Array.isArray(users) || users.length === 0) {
+    return res.status(400).send('Invalid input');
+  }
+
+  const values = users.map(user => [
+    user.email, user.password, user.firstName, user.lastName, user.dateOfBirth
+  ]);
+
+  db.query(
+    'INSERT INTO users (email, password, firstName, lastName, dateOfBirth) VALUES ?',
+    [values],
+    (err: QueryError | null) => {
+      if (err) {
+        if (err.code === 'ER_DUP_ENTRY') return res.status(409).send('Duplicate email entries found');
+        return res.status(500).send('Error inserting users');
+      }
+      res.status(201).send('Users registered successfully');
+    }
+  );
+});
+
 app.post('/login', (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).send('Email and password are required');
