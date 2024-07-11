@@ -4,7 +4,8 @@ import axios, { AxiosError } from 'axios';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './signUp.css';
-import SuccessScreen from '../../../successScreen';
+import SuccessScreen from './successScreen';
+import { baseURL } from '../../../const';
 
 interface FormValues {
   firstName: string;
@@ -116,7 +117,7 @@ const SignUp: React.FC = () => {
     } // if any has returned an error -> return -- meaning the form won't be sent
 
     try {
-      const response = await axios.post('http://localhost:3001/api/user', {
+      const response = await axios.post(`${baseURL}/api/user`, {
         firstName,
         lastName,
         birthday,

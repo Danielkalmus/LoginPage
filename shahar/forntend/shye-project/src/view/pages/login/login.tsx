@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { faCircleExclamation, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './login.css';
+import { baseURL } from '../../../const';
 
 interface FormValues {
     email: string;
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
         const { email, password } = formValues;
 
         try {
-            const response = await axios.post('http://localhost:3001/api/userLogin', {
+            const response = await axios.post(`${baseURL}/api/userLogin`, {
                 email,
                 password
             }, {

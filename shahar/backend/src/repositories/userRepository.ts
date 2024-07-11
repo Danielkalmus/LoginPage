@@ -6,18 +6,31 @@ interface User {
   password: string;
   firstName: string;
   lastName: string;
-  birthday: Date;
+  birthday: string;
 }
 
 interface UserRow extends RowDataPacket, User { }
 
+const formatDate = (date: Date): string => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  const day = ('0' + d.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+};
 
 const findUserByEmail = async (email: string): Promise<User[]> => {
   const [rows] = await pool.query<UserRow[]>(
     'SELECT * FROM s_training_db.users WHERE email = ?;',
     [email]
   );
-  return rows;
+
+  const users = rows.map(user => ({
+    ...user,
+    birthday: formatDate(new Date(user.birthday))
+  }));
+
+  return users;
 };
 
 const findUserByID = async (id: number): Promise<User[]> => {
@@ -25,7 +38,13 @@ const findUserByID = async (id: number): Promise<User[]> => {
     'SELECT * FROM s_training_db.users WHERE id = ?;',
     [id]
   );
-  return rows;
+
+  const users = rows.map(user => ({
+    ...user,
+    birthday: formatDate(new Date(user.birthday))
+  }));
+
+  return users;
 };
 
 const createUser = async (user: User): Promise<void> => {

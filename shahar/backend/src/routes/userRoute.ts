@@ -29,7 +29,8 @@ interface UserQueryRequest extends Request {
 router.post('/user', async (req: RegisterRequest, res: Response) => {
   const { firstName, lastName, email, password, birthday } = req.body;
   try {
-    await registerUser({ firstName, lastName, email, password, birthday });
+    const formattedBirthday = new Date(birthday).toISOString().split('T')[0];
+    await registerUser({ firstName, lastName, email, password, birthday: formattedBirthday });
     res.status(201).json({ success: true });
   } catch (err) {
     if (err instanceof Error && err.message === 'An account already exists with this email address') {

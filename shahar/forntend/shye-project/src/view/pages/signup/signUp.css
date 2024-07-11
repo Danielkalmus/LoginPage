@@ -1,3 +1,4 @@
+/* Existing styles */
 .container {
   display: flex;
   justify-content: center;
@@ -10,14 +11,14 @@
   background-color: rgba(98, 105, 111, 0.158);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(116, 123, 255, 1);
+  box-shadow: 0 0 10px #fb86ff;
   align-items: initial;
   height: 600px;
   width: 400px;
 }
 
 .sign-up-form h1 {
-  color: #747bff;
+  color: #fb86ff;
 }
 
 .sign-up-form form {
@@ -45,7 +46,7 @@
   flex: 1;
 }
 
-.input-group:not(:last-child){
+.input-group:not(:last-child) {
   margin-right: 8px;
 }
 
@@ -62,32 +63,36 @@
   padding: 4px;
   margin-bottom: 0px;
   box-sizing: border-box;
-  background-color: #1a1a1a;
-  color: #747bff;
+  background-color: #f9c9fa;
+  color: #000000;
 }
 
 .sign-up-form input:focus {
   border-width: 2px;
-  border-color: #747bff;
+  border-color: #fb86ff;
   outline: none;
 }
 
+.sign-up-form input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Invert colors for the calendar icon */
+}
+
 .errors-container {
-  height: 20px; /* Reserve space for the error message */
+  height: 20px;
   display: flex;
-  justify-content: flex-start; /* Align the error message to the left */
-  align-items: center; /* Center the error message vertically */
-  margin-left: 5px; /* Adjust margin as needed */
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 5px;
 }
 
 .errors-container .visible {
   color: #cc000d;
   font-size: 0.7em;
-  text-align: left; /* Ensure text alignment is left */
+  text-align: left;
 }
 
 .errors-container .invisible {
-  visibility: hidden; /* Hide the error message, but keep its space */
+  visibility: hidden;
 }
 
 .option-login {
@@ -96,9 +101,10 @@
 
 .option-login p a {
   font-weight: 500;
-  color: #747bff;
+  color: #fb86ff;
   text-decoration: none;
 }
+
 .option-login p a:hover {
   text-decoration: underline;
 }

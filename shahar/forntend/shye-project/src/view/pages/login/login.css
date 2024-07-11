@@ -10,14 +10,14 @@
   background-color: rgba(98, 105, 111, 0.158);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(116, 123, 255, 1);
+  box-shadow: 0 0 10px #fb86ff;
   text-align: center;
   align-items: initial;
   height: 450px;
 }
 
 .login-form h1 {
-  color: #747bff;
+  color: #fb86ff;
 }
 
 .login-form form {
@@ -35,18 +35,19 @@
 }
 
 .login-form input {
+  text-align: left;
   border-radius: 4px;
   border: 2px solid transparent;
   width: calc(100% - 10px);
   padding: 4px;
   margin-bottom: 10px;
   box-sizing: border-box;
-  background-color: #1a1a1a;
-  color: #747bff;
+  background-color: #f9c9fa;
+  color: #000000;
 }
 
 .login-form input:focus {
-  border: 2px solid #646cff;
+  border: 2px solid #fb86ff;
   outline: none;
 }
 
@@ -65,7 +66,7 @@
 }
 
 .login-button.valid {
-  background-color: #646cff;
+  background-color: #fb86ff;
   cursor: pointer;
 }
 

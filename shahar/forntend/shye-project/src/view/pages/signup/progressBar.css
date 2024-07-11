@@ -1,14 +1,13 @@
 /* ProgressBar.css */
 .progress-bar {
     width: 500px;
-    background-color: #f3f3f3;
     border-radius: 5px;
     overflow: hidden;
 }
 
 .progress-bar-fill {
     height: 5px;
-    background-color: #646cff;
+    background-color: #fb86ff;
     width: 0;
     transition: width 0.1s ease-in-out;
 }

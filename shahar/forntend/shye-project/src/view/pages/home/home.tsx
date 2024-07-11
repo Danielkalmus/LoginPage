@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 
-interface User {
+export interface User {
     id: number;
     first_name: string;
     last_name: string;
@@ -17,7 +17,6 @@ const Home: React.FC = () => {
     const { email } = (location.state as any) || {};
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState('');
-    const [showConfirm, setShowConfirm] = useState(false);
 
     const fetchUserData = async () => {
         try {
@@ -40,29 +39,10 @@ const Home: React.FC = () => {
         }
     };
 
-    const handleDeleteAccount = async () => {
-        if (!user) return;
-
-        try {
-            const response = await axios.delete(`http://localhost:3001/api/user`, {
-                params: { email: user.email }
-            });
-
-            if (response.status === 200) {
-                alert('Account deleted successfully');
-                navigate('/');
-            } else {
-                setError(response.data.message || 'An error occurred');
-            }
-        } catch (error: unknown) {
-            const axiosError = error as AxiosError;
-            if (axiosError.response && axiosError.response.data && (axiosError.response.data as any).message) {
-                setError((axiosError.response.data as any).message);
-            } else {
-                setError('An error occurred');
-            }
-        }
-    };
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        navigate('/home/settings', { state: { user } });
+    }
 
     useEffect(() => {
         if (email) {
@@ -71,23 +51,19 @@ const Home: React.FC = () => {
     }, [email]);
 
     return (
-        <div>
-            <h1>היוש {user && user.first_name + " " + user.last_name}</h1>
+        <form onSubmit={handleSubmit}>
             <div>
-                <button type="button">Edit Account</button>
+                {user ? (
+                    <>
+                        <h1>היוש {user.first_name} {user.last_name}</h1>
+                        <button type="submit">Account Settings</button>
+                    </>
+                ) : (
+                    <p>Loading...</p>
+                )}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
-            <div>
-                <button type="button" onClick={() => setShowConfirm(true)}>Delete This Account</button>
-            </div>
-            {showConfirm && (
-                <div>
-                    <p>Are you sure you want to delete this account?</p>
-                    <button type="button" onClick={handleDeleteAccount}>Yes</button>
-                    <button type="button" onClick={() => setShowConfirm(false)}>Cancel</button>
-                </div>
-            )}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
+        </form>
     );
 };
 

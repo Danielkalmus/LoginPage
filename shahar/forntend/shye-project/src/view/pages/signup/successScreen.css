@@ -5,11 +5,10 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #242424;
 }
 
 .success-screen h1 {
-    color: #646cff;
+    color: #fb86ff;
     font-size: 34px;
     margin-bottom: 5px;
 }
