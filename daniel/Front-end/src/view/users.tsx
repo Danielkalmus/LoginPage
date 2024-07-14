@@ -3,7 +3,7 @@ import axios from "axios";
 import ArrowButton from "./components/ArrowButton";
 import { format } from "date-fns";
 
-interface User {
+export interface User {
   id: number;
   email: string;
   password: string;
@@ -18,11 +18,15 @@ const Users: React.FC = () => {
   const [searchedEmail, setSearchedEmail] = useState<string>("");
   const [sortByYoungToOld, setSortByYoungToOld] = useState<boolean>(false);
   const [sortByOldToYoung, setSortByOldToYoung] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const usersPerPage = 20;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get<{ result: User[] }>("http://localhost:3000/users");
+        const response = await axios.get<{ result: User[] }>(
+          "http://localhost:3000/users"
+        );
         if (Array.isArray(response.data.result)) {
           setUsers(response.data.result);
         } else {
@@ -53,23 +57,29 @@ const Users: React.FC = () => {
     if (sortByYoungToOld) setSortByYoungToOld(false);
   };
 
+  const handlePageChange = (pageNumber: number): void => {
+    setCurrentPage(pageNumber);
+  };
+
   const filteredUsers = users.filter((user) =>
     user.email.toLowerCase().includes(searchedEmail.toLowerCase())
   );
 
   const sortedUsers = sortByYoungToOld
-    ? [...filteredUsers].sort((a, b) => {
-        const ageA = calculateAge(a.dateOfBirth);
-        const ageB = calculateAge(b.dateOfBirth);
-        return ageA - ageB;
-      })
+    ? [...filteredUsers].sort(
+        (a, b) => calculateAge(a.dateOfBirth) - calculateAge(b.dateOfBirth)
+      )
     : sortByOldToYoung
-    ? [...filteredUsers].sort((a, b) => {
-        const ageA = calculateAge(a.dateOfBirth);
-        const ageB = calculateAge(b.dateOfBirth);
-        return ageB - ageA;
-      })
+    ? [...filteredUsers].sort(
+        (a, b) => calculateAge(b.dateOfBirth) - calculateAge(a.dateOfBirth)
+      )
     : filteredUsers;
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  const totalPages = Math.ceil(sortedUsers.length / usersPerPage);
 
   return (
     <div>
@@ -107,7 +117,7 @@ const Users: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedUsers.map((user) => (
+          {currentUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.email}</td>
@@ -119,6 +129,24 @@ const Users: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <div>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>
+          {" "}
+          Page {currentPage} of {totalPages}{" "}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
