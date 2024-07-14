@@ -10,6 +10,10 @@ const registerUser = async (user: User): Promise<void> => {
 };
 
 const getUserByEmail = async (email: string): Promise<User> => {
+    if (!email) {
+        console.error('bad request: Email is required');
+        throw new Error('Email is required');
+      }
     const users = await findUserByEmail(email);
     if (users.length === 0) {
         console.error('Authentication failed: No user found with this email');

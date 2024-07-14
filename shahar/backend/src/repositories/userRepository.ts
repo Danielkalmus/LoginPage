@@ -1,4 +1,5 @@
-import { pool } from '../config/db'
+import { Console } from 'console';
+import { pool } from '../services/databat.service'
 import { RowDataPacket } from 'mysql2/promise';
 
 interface User {
@@ -20,10 +21,16 @@ const formatDate = (date: Date): string => {
 };
 
 const findUserByEmail = async (email: string): Promise<User[]> => {
+  console.log(await pool.query<UserRow[]>(
+    'SELECT * FROM s_training_db.users WHERE email = ?;',
+    [email]
+  ));
   const [rows] = await pool.query<UserRow[]>(
     'SELECT * FROM s_training_db.users WHERE email = ?;',
     [email]
   );
+
+  console.log(rows);
 
   const users = rows.map(user => ({
     ...user,

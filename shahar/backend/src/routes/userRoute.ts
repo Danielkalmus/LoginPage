@@ -43,14 +43,11 @@ router.post('/user', async (req: RegisterRequest, res: Response) => {
 
 router.get('/user', async (req: UserQueryRequest, res: Response) => {
   const { email } = req.query;
-  if (!email) {
-    return res.status(400).json({ success: false, message: 'Email is required' });
-  }
   try {
     const user = await getUserByEmail(email as string); // Type assertion
     res.json(user);
   } catch (err) {
-    if (err instanceof Error && err.message === 'No user found with this email') {
+    if (err instanceof Error && err.message === 'No user found with this email' || err instanceof Error && err.message === 'Email is required') {
       res.status(404).json({ success: false, message: err.message });
     } else {
       res.status(500).json({ success: false, message: 'Internal Server Error' });

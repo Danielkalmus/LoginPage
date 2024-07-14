@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoute';
-import { pool } from './config/db';
+import { pool } from './services/databat.service';
 
 dotenv.config();
 
