@@ -7,7 +7,7 @@
 
 .progress-bar-fill {
     height: 5px;
-    background-color: #fb86ff;
+    background-color: #f943ff;
     width: 0;
     transition: width 0.1s ease-in-out;
 }

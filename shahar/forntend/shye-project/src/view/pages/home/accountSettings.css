@@ -20,7 +20,7 @@ input {
     padding: 4px;
     margin-bottom: 10px;
     box-sizing: border-box;
-    background-color: #f9c9fa;
+    background-color: #fb86ff;
     color: #000000;
 }
 
@@ -29,7 +29,7 @@ input {
     background-color: rgba(98, 105, 111, 0.158);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px #fb86ff;
+    box-shadow: 0 0 10px #f943ff;
     text-align: center;
     align-items: initial;
 }
@@ -43,3 +43,39 @@ input {
 .delete-buttons button:not(:last-child) {
     margin-right: 5px;
 }
+
+.top-left {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* Remove any default padding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-button .fa-house-user {
+    color: #fb86ff;
+    font-size: 1.5em; /* Adjust as needed */
+}
+
+.icon-button:hover {
+    background-color: transparent;
+    border: transparent;
+}
+
+.fa-house-user:hover {
+    color: #f943ff;
+    border: transparent;
+}
+
+ .icon-button:focus {
+    border: none;
+    outline: none;
+ }

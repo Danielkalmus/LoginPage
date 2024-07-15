@@ -1,4 +1,4 @@
-import { findUserByEmail, findUserByID, createUser, deleteUserByEmail, updateUserInfo, User } from '../repositories/userRepository';
+import { findUserByEmail, findUserByID, findAllUsers ,createUser, deleteUserByEmail, updateUserInfo, User } from '../repositories/userRepository';
 
 const registerUser = async (user: User): Promise<void> => {
     const existingUser = await findUserByEmail(user.email);
@@ -31,6 +31,10 @@ const getUserByID = async (id: number): Promise<User> => {
     return users[0];
 };
 
+const getAllUsers = async (): Promise<User[]> => {
+    return await findAllUsers();
+}
+
 const authenticateUser = async (email: string, password: string): Promise<User> => {
     const user = await getUserByEmail(email);
     if (user.password !== password) {
@@ -59,6 +63,7 @@ export {
     registerUser,
     getUserByEmail,
     getUserByID,
+    getAllUsers,
     authenticateUser,
     deleteUser,
     updateUserField

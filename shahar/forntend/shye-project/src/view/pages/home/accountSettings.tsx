@@ -2,7 +2,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { baseURL } from '../../../const';
-import './account settings.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
+import './accountSettings.css';
 
 const Settings: React.FC = () => {
     const location = useLocation();
@@ -78,8 +80,18 @@ const Settings: React.FC = () => {
         setShowDeleteButton(!showDeleteButton);
     }
 
+    const returnHome = () => {
+        navigate('/home', { state: { loggedUser: user } });
+    }
+
     return (
         <form>
+            <div className='top-left'>
+                <button type="button" className='icon-button' onClick={returnHome}>
+                    <FontAwesomeIcon icon={faHouseUser} />
+                </button>
+            </div>
+
             <div className='settings-form'>
                 {user ? (
                     <>
@@ -165,7 +177,7 @@ const Settings: React.FC = () => {
                             </div>
                         )}
                         <br />
-                        {showDeleteButton && (<div> 
+                        {showDeleteButton && (<div>
                             <button type="button" onClick={handleDeleteButtons}>Delete This Account</button>
                         </div>)}
                         {showConfirmDelete && (

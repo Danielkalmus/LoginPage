@@ -62,8 +62,10 @@ const Login: React.FC = () => {
 
             console.log(response.status)
             if (response.status) {
-                setError('');
-                navigate('/home', { state: { email } }); // Pass email as state
+                const loggedUser = response.data.user;
+                    setError('');
+                    navigate('/home', { state: { loggedUser, email } }); // Pass email as state
+                
             } else {
                 setError(response.data.message || 'An error occurred');
             }

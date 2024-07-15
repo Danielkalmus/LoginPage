@@ -21,16 +21,10 @@ const formatDate = (date: Date): string => {
 };
 
 const findUserByEmail = async (email: string): Promise<User[]> => {
-  console.log(await pool.query<UserRow[]>(
-    'SELECT * FROM s_training_db.users WHERE email = ?;',
-    [email]
-  ));
   const [rows] = await pool.query<UserRow[]>(
     'SELECT * FROM s_training_db.users WHERE email = ?;',
     [email]
   );
-
-  console.log(rows);
 
   const users = rows.map(user => ({
     ...user,
@@ -53,6 +47,16 @@ const findUserByID = async (id: number): Promise<User[]> => {
 
   return users;
 };
+
+const findAllUsers = async (): Promise<User[]> => {
+  const [rows] = await pool.query<UserRow[]>(
+    'SELECT * FROM s_training_db.users;'
+  );
+
+ 
+
+  return rows;
+}
 
 const createUser = async (user: User): Promise<void> => {
   const { firstName, lastName, email, password, birthday } = user;
@@ -80,6 +84,7 @@ export {
   User,
   findUserByEmail,
   findUserByID,
+  findAllUsers,
   createUser,
   deleteUserByEmail,
   updateUserInfo

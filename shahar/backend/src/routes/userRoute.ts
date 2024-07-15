@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { registerUser, getUserByEmail, authenticateUser, deleteUser, updateUserField } from '../services/userService';
+import { registerUser, getUserByEmail, authenticateUser, deleteUser, updateUserField, getAllUsers } from '../services/userService';
 
 const router = express.Router();
 
@@ -52,6 +52,15 @@ router.get('/user', async (req: UserQueryRequest, res: Response) => {
     } else {
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
+  }
+});
+
+router.get('/users', async (req: Request, res: Response) => {
+  try {
+    const users = await getAllUsers();
+    res.json(users);
+  } catch (err) {
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
 

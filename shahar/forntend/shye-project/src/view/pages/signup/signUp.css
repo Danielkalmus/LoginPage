@@ -11,14 +11,14 @@
   background-color: rgba(98, 105, 111, 0.158);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px #fb86ff;
+  box-shadow: 0 0 10px #f943ff;
   align-items: initial;
   height: 600px;
   width: 400px;
 }
 
 .sign-up-form h1 {
-  color: #fb86ff;
+  color: #f943ff;
 }
 
 .sign-up-form form {
@@ -63,13 +63,13 @@
   padding: 4px;
   margin-bottom: 0px;
   box-sizing: border-box;
-  background-color: #f9c9fa;
+  background-color: #fb86ff;
   color: #000000;
 }
 
 .sign-up-form input:focus {
   border-width: 2px;
-  border-color: #fb86ff;
+  border-color: #f943ff;
   outline: none;
 }
 
@@ -101,7 +101,7 @@
 
 .option-login p a {
   font-weight: 500;
-  color: #fb86ff;
+  color: #f943ff;
   text-decoration: none;
 }
 
