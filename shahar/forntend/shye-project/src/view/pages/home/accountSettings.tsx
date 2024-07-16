@@ -5,11 +5,13 @@ import { baseURL } from '../../../const';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
 import './accountSettings.css';
+import { User } from './home';
+import Sidebar from './sidebar';
 
 const Settings: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { user } = (location.state as any) || {};
+    const { user } = location.state || {} as { loggedUser: User };
     const [error, setError] = useState('');
     const [currentPassword, setCurrentPassword] = useState('');
     const [updatedPassword, setUpdatedPassword] = useState('');
@@ -18,6 +20,8 @@ const Settings: React.FC = () => {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [showChangePasswordButton, setShowChangePasswordButton] = useState(true);
     const [showChangePasswordContainer, setShowChangePasswordContainer] = useState(false);
+
+    console.log(user);
 
     const handleDeleteAccount = async () => {
         if (!user) return;
@@ -85,13 +89,13 @@ const Settings: React.FC = () => {
     }
 
     return (
-        <form>
-            <div className='top-left'>
+        <div className='form'>
+             <div className='top-left'>
                 <button type="button" className='icon-button' onClick={returnHome}>
                     <FontAwesomeIcon icon={faHouseUser} />
                 </button>
             </div>
-
+            
             <div className='settings-form'>
                 {user ? (
                     <>
@@ -193,7 +197,7 @@ const Settings: React.FC = () => {
                     <p>Loading...</p>
                 )}
             </div>
-        </form>
+        </div>
     );
 };
 

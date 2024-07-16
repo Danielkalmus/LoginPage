@@ -7,6 +7,15 @@
   position: relative;
 }
 
+h1,
+p {
+ text-align: center;
+}
+
+h1 {
+  padding: 5%;
+ }
+
 .sign-up-form {
   background-color: rgba(98, 105, 111, 0.158);
   padding: 20px;
@@ -87,7 +96,8 @@
 
 .errors-container .visible {
   color: #cc000d;
-  font-size: 0.7em;
+  font-weight: bold;
+  font-size: 0.65em;
   text-align: left;
 }
 

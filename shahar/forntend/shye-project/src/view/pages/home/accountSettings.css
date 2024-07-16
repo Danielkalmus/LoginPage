@@ -1,6 +1,14 @@
-.settings-form {
+.form {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
     width: 350px;
+    margin: 0 auto;
+    text-align: center;
 }
+
 
 label {
     font-size: 1em;
@@ -46,15 +54,18 @@ input {
 
 .top-left {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    left: 10px; /* Adjust as needed */
+    top: 10px;
+    /* Adjust as needed */
+    left: 10px;
+    /* Adjust as needed */
 }
 
 .icon-button {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0; /* Remove any default padding */
+    padding: 0;
+    /* Remove any default padding */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,7 +73,8 @@ input {
 
 .icon-button .fa-house-user {
     color: #fb86ff;
-    font-size: 1.5em; /* Adjust as needed */
+    font-size: 1.5em;
+    /* Adjust as needed */
 }
 
 .icon-button:hover {
@@ -75,7 +87,7 @@ input {
     border: transparent;
 }
 
- .icon-button:focus {
+.icon-button:focus {
     border: none;
     outline: none;
- }
+}
