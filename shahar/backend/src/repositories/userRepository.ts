@@ -53,9 +53,12 @@ const findAllUsers = async (): Promise<User[]> => {
     'SELECT * FROM s_training_db.users;'
   );
 
- 
+  const users = rows.map(user => ({
+    ...user,
+    birthday: formatDate(new Date(user.birthday))
+  })); 
 
-  return rows;
+  return users;
 }
 
 const createUser = async (user: User): Promise<void> => {

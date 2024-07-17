@@ -1,8 +1,3 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from './sidebar';
-import './home.css'
-
 export interface User {
     id: number;
     first_name: string;
@@ -11,22 +6,29 @@ export interface User {
     birthday: string;
     password: string;
 }
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from './sidebar';
+import './home.css';
+import UserSessionContext from '../../../userSessionProvider';
 
 const Home: React.FC = () => {
-    const location = useLocation();
     const navigate = useNavigate();
-    const { loggedUser } = location.state || {};
-    const [user, setUser] = useState<User | null>(loggedUser);
-    const [error, setError] = useState('');
+    const { data: user, error } = useContext(UserSessionContext)!;
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
 
     return (
         <div className="home-container">
-            <Sidebar loggedUser={user} />
+            <Sidebar />
             <div className='content'>
                 {user ? (
                     <>
                         <h1>היוש {user.first_name} {user.last_name}</h1>
-
                     </>
                 ) : (
                     <p>Loading...</p>

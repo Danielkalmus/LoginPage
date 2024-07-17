@@ -30,21 +30,14 @@ const SidebarLabel = styled.span`
 
 interface SubMenuProps {
     item: NavItem;
-    loggedUser: User | null; // Define loggedUser prop
 }
 
-const SubMenu: React.FC<SubMenuProps> = ({ item, loggedUser }) => {
+const SubMenu: React.FC<SubMenuProps> = ({ item }) => {
     const navigate = useNavigate();
 
     const handleItemClick = () => {
-        if (item.path === '/home/settings' && loggedUser) {
-            navigate(item.path, { state: { user: loggedUser } }); // Pass loggedUser to account settings
-        } else if (item.path === '/home' && loggedUser) {
-            navigate(item.path, { state: { loggedUser: loggedUser } });
-        }
-        else {
             navigate(item.path);
-        }
+
     };
 
     return (

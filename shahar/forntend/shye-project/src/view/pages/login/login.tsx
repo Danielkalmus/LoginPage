@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
+import UserSessionContext from '../../../userSessionProvider'; // Adjust path as needed
 import { faCircleExclamation, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './login.css';
-import { baseURL } from '../../../const';
 
 interface FormValues {
     email: string;
@@ -13,10 +12,11 @@ interface FormValues {
 
 const Login: React.FC = () => {
     const [formValues, setFormValues] = useState<FormValues>({ email: '', password: '' });
-    const [error, setError] = useState('');
+    const [frontError, setFrontError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [isPasswordValid, setIsPasswordValid] = useState(true);
+    const { signin, error } = useContext(UserSessionContext)!;
     const navigate = useNavigate();
 
     const validateEmail = (email: string) => {
@@ -31,11 +31,11 @@ const Login: React.FC = () => {
             setIsEmailValid(validateEmail(value));
         }
         if (name === "password") {
-            setIsPasswordValid(value.length < 7);
+            setIsPasswordValid(value.length <= 6);
             if (value.length > 6) {
-                setError('Password must have up to 6 characters');
+                setFrontError('Password must have at least 6 characters');
             } else {
-                setError('');
+                setFrontError('');
             }
         }
     };
@@ -46,38 +46,10 @@ const Login: React.FC = () => {
 
     const isFormValid = isEmailValid && isPasswordValid && formValues.email && formValues.password;
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { email, password } = formValues;
-
-        try {
-            const response = await axios.post(`${baseURL}/api/userLogin`, {
-                email,
-                password
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            console.log(response.status)
-            if (response.status) {
-                const loggedUser = response.data.user;
-                    setError('');
-                    navigate('/home', { state: { loggedUser, email } }); // Pass email as state
-                
-            } else {
-                setError(response.data.message || 'An error occurred');
-            }
-        } catch (error: unknown) {
-            const axiosError = error as AxiosError;
-
-            if (axiosError.response && axiosError.response.data && (axiosError.response.data as any).message) {
-                setError((axiosError.response.data as any).message);
-            } else {
-                setError('An error occurred');
-            }
-        }
+        signin(email, password);
     };
 
     return (
@@ -115,16 +87,21 @@ const Login: React.FC = () => {
                             </div>
                         </div>
                         <div className="error-container">
-                            <p className={error ? 'visible' : 'invisible'}>
-                                <FontAwesomeIcon icon={faCircleExclamation} /> {error}
+                            <p className={frontError ? 'visible' : 'invisible'}>
+                                <FontAwesomeIcon icon={faCircleExclamation} /> {frontError}
                             </p>
                         </div>
                         <div>
-                            <button type="submit" className={`login-button ${isFormValid ? 'valid' : ''}`}>Login</button>
+                            <button type="submit" className={`login-button ${isFormValid ? 'valid' : ''}`} disabled={!isFormValid}>Login</button>
+                            <div className="signin-error-container">
+                                {error && <p>
+                                    <FontAwesomeIcon icon={faCircleExclamation} /> {error}
+                                </p>}
+                            </div>
                         </div>
                         <div className="signup-container">
                             <p>
-                                Don't already have an account? <button type="button" onClick={() => navigate('/signup')}>Sign Up</button>
+                                Don't have an account? <button type="button" onClick={() => navigate('/signup')}>Sign Up</button>
                             </p>
                         </div>
                     </div>

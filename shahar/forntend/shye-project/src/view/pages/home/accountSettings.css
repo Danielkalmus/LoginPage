@@ -54,40 +54,6 @@ input {
 
 .top-left {
     position: absolute;
-    top: 10px;
-    /* Adjust as needed */
-    left: 10px;
-    /* Adjust as needed */
-}
-
-.icon-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    /* Remove any default padding */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-button .fa-house-user {
-    color: #fb86ff;
-    font-size: 1.5em;
-    /* Adjust as needed */
-}
-
-.icon-button:hover {
-    background-color: transparent;
-    border: transparent;
-}
-
-.fa-house-user:hover {
-    color: #f943ff;
-    border: transparent;
-}
-
-.icon-button:focus {
-    border: none;
-    outline: none;
+    top: 0px;
+    left: 0px;
 }

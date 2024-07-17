@@ -23,7 +23,7 @@ export const SidebarData: NavItem[] = [
     },
     {
         title: "Users",
-        path: "/usersTable",
+        path: "/home/users",
         icon: <FaIcons.FaUsers />,
     },
     {

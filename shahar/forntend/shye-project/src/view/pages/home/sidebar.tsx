@@ -9,9 +9,6 @@ import { IconContext } from "react-icons/lib";
 import './sidebar.css';
 import { User } from "./home";
 
-interface SidebarProps {
-    loggedUser: User | null; // Define props to pass loggedUser
-}
 
 const Nav = styled.div`
     background: #242424;
@@ -51,7 +48,7 @@ const SidebarWrap = styled.div`
     width: 100%;
 `;
 
-const Sidebar: React.FC<SidebarProps> = ({ loggedUser }) => {
+const Sidebar: React.FC = () => {
     const [sidebar, setSidebar] = useState<boolean>(false);
 
     const showSidebar = (): void => setSidebar(!sidebar);
@@ -70,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ loggedUser }) => {
                             <AiIcons.AiOutlineClose onClick={showSidebar} />
                         </NavIcon>
                         {SidebarData.map((item, index) => {
-                            return <SubMenu item={item} key={index} loggedUser={loggedUser} />; // Pass loggedUser as prop to SubMenu
+                            return <SubMenu item={item} key={index}  />; // Pass loggedUser as prop to SubMenu
                         })}
                     </SidebarWrap>
                 </SidebarNav>

@@ -87,6 +87,12 @@
   visibility: hidden;
 }
 
+.signin-error-container {
+  color: #cc000d;
+  font-size: 0.8em;
+  padding: 4px;
+}
+
 .signup-container {
   text-align: center;
 }
@@ -126,6 +132,7 @@
 .password-input-container button:hover {
   background-color: transparent;
 }
+
 .password-input-container button:focus,
 button:focus-visible {
   outline: transparent;
