@@ -91,6 +91,8 @@
   color: #cc000d;
   font-size: 0.8em;
   padding: 4px;
+  font-weight: bold;
+  height: 30px;
 }
 
 .signup-container {
@@ -136,4 +138,12 @@
 .password-input-container button:focus,
 button:focus-visible {
   outline: transparent;
+}
+
+.login-button:disabled {
+  cursor: not-allowed; /* Change cursor style to indicate button is disabled */
+}
+
+.login-button:disabled:hover {
+  background-color: #fb86ff;
 }
