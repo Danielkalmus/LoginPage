@@ -1,8 +1,17 @@
 import { User } from "./users";
 
 const names: string[] = [
-  "John", "Jane", "Alex", "Emily", "Chris", 
-  "Katie", "Michael", "Sarah", "David", "Laura"
+  "John",
+  "Jane",
+  "Alex",
+  "Emily",
+  "Chris",
+  "Katie",
+  "Michael",
+  "Sarah",
+  "David",
+  "Laura",
+  "Daniel",
 ];
 
 function getRandomInt(min: number, max: number): number {
@@ -32,14 +41,18 @@ export const GenerateRandomUsers = (count: number): User[] => {
 
   for (let i = 0; i < count; i++) {
     const [firstName, lastName] = uniqueNames[i].split(" ");
-    const randomYear = new Date(getRandomInt(currentYear - 50, currentYear - 18), getRandomInt(0, 11), getRandomInt(1, 28))
+    const randomYear = new Date(
+      getRandomInt(currentYear - 50, currentYear - 18),
+      getRandomInt(0, 11),
+      getRandomInt(1, 28)
+    )
       .toISOString()
       .split("T")[0];
 
     const user: User = {
       id: i + 1,
       email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
-      password: Math.random().toString(36).substring(2, 8), 
+      password: Math.random().toString(36).substring(2, 8),
       firstName: firstName,
       lastName: lastName,
       dateOfBirth: randomYear,

@@ -40,13 +40,6 @@ const Users: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const calculateAge = (dateOfBirth: string): number => {
-    const birthDate = new Date(dateOfBirth);
-    const ageDiff = Date.now() - birthDate.getTime();
-    const ageDate = new Date(ageDiff);
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-  };
-
   const handleSortYoungToOld = (): void => {
     setSortByYoungToOld((prevSortByYoungToOld) => !prevSortByYoungToOld);
     if (sortByOldToYoung) setSortByOldToYoung(false);
@@ -67,11 +60,11 @@ const Users: React.FC = () => {
 
   const sortedUsers = sortByYoungToOld
     ? [...filteredUsers].sort(
-        (a, b) => calculateAge(a.dateOfBirth) - calculateAge(b.dateOfBirth)
+        (a, b) => new Date(a.dateOfBirth).getTime() - new Date(b.dateOfBirth).getTime()
       )
     : sortByOldToYoung
     ? [...filteredUsers].sort(
-        (a, b) => calculateAge(b.dateOfBirth) - calculateAge(a.dateOfBirth)
+        (a, b) => new Date(b.dateOfBirth).getTime() - new Date(a.dateOfBirth).getTime()
       )
     : filteredUsers;
 
@@ -99,10 +92,10 @@ const Users: React.FC = () => {
       />
       <div>
         <button onClick={handleSortYoungToOld} disabled={sortByOldToYoung}>
-          {sortByYoungToOld ? "Unsort Young to Old" : "Sort Young to Old"}
+          {sortByYoungToOld ? "Unsort Old to Young" : "Sort Old to Young"}
         </button>
         <button onClick={handleSortOldToYoung} disabled={sortByYoungToOld}>
-          {sortByOldToYoung ? "Unsort Old to Young" : "Sort Old to Young"}
+          {sortByOldToYoung ? "Unsort Young to Old" : "Sort Young to Old"}
         </button>
       </div>
       <table>
