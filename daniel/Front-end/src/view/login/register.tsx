@@ -107,13 +107,15 @@ const Register: React.FC = () => {
   };
 
   const handleGenerateUsers = async () => {
-    const users = GenerateRandomUsers(numberOfUsers);
+    const users = numberOfUsers ? GenerateRandomUsers(numberOfUsers) : [];
     try {
       await axios.post("http://localhost:3000/UsersGenerator", users);
       alert(numberOfUsers + " users created successfully");
       navigate("/");
     } catch (error: any) {
-      setError(error.response?.data || "An error occurred during bulk registration");
+      setError(
+        error.response?.data || "An error occurred during bulk registration"
+      );
     }
   };
 
@@ -183,16 +185,18 @@ const Register: React.FC = () => {
         <br />
         <button type="submit">Register</button>
       </form>
-      <p>Maximum 90 users at once</p>
+      <p>Maximum 110 users at once</p>
       <input
-          placeholder="Number of users"
-          type="number"
-          value={numberOfUsers}
-          onChange={(e) => setNumberOfUsers(parseInt(e.target.value))}
-          required
-        />
-        <br />
-      <button onClick={handleGenerateUsers}>Generate {numberOfUsers} Users</button>
+        placeholder="Number of users"
+        type="number"
+        value={numberOfUsers}
+        onChange={(e) => setNumberOfUsers(parseInt(e.target.value))}
+        required
+      />
+      <br />
+      <button onClick={handleGenerateUsers}>
+        Generate {numberOfUsers} Users
+      </button>
     </div>
   );
 };
