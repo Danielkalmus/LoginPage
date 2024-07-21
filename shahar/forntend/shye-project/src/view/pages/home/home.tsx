@@ -8,9 +8,9 @@ export interface User {
 }
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from './sidebar';
 import './home.css';
 import UserSessionContext from '../../../userSessionProvider';
+import Sidebar from '../sidebar/sidebar';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();

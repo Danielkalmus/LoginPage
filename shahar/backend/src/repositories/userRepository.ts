@@ -90,5 +90,6 @@ export {
   findAllUsers,
   createUser,
   deleteUserByEmail,
-  updateUserInfo
+  updateUserInfo,
+  formatDate
 };
