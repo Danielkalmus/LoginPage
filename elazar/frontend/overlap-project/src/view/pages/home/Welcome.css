@@ -1,0 +1,20 @@
+h1 {
+    text-align:center;
+    margin-bottom: 20px;
+    color: #6b6366;
+}
+
+.edit-or-delete-account button {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #696c6a;
+}
+
+.edit-or-delete-account button:hover {
+    background-color: #818582;
+}
