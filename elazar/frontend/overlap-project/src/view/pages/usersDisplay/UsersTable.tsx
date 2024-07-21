@@ -24,7 +24,7 @@ const UserTable = () => {
         const response = await axios.get(`${baseUrl}/getAllUsers`);
         setUsers(response.data);
       } catch (error) {
-        console.error('There was an error fetching the data!', error);
+        console.error('There was an error fetching the data !', error);
       }
     };
 
