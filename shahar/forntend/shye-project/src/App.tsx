@@ -3,8 +3,8 @@ import Login from './view/pages/login/login'
 import { Route, Routes } from 'react-router-dom';
 import Home from './view/pages/home/home'
 import SignUp from './view/pages/signup/signUp';
-import Settings from './view/pages/home/accountSettings';
-import UsersPage from './view/pages/home/usersTable';
+import Settings from './view/pages/settings/accountSettings';
+import UsersPage from './view/pages/users/usersTable';
 
 function App() {
   return (

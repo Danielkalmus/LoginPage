@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { registerUser, getUserByEmail, authenticateUser, deleteUser, updateUserField, getAllUsers } from '../services/userService';
+import { registerUser, getUserByEmail, authenticateUser, deleteUser, updateUserField, getAllUsers, newUser } from '../services/userService';
 
 const router = express.Router();
 
@@ -32,6 +32,20 @@ router.post('/user', async (req: RegisterRequest, res: Response) => {
     const formattedBirthday = new Date(birthday).toISOString().split('T')[0];
     await registerUser({ firstName, lastName, email, password, birthday: formattedBirthday });
     res.status(201).json({ success: true });
+  } catch (err) {
+    if (err instanceof Error && err.message === 'An account already exists with this email address') {
+      res.status(409).json({ success: false, message: err.message });
+    } else {
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+});
+
+router.post('/randomUserX10', async (req: Request, res: Response) => {
+  try {
+    await newUser();
+    const users = await getAllUsers();
+    res.status(201).json({ success: true, usersArray: users});
   } catch (err) {
     if (err instanceof Error && err.message === 'An account already exists with this email address') {
       res.status(409).json({ success: false, message: err.message });
@@ -84,10 +98,8 @@ router.post('/userLogin', async (req: LoginRequest, res: Response) => {
 router.put('/user/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const { field, newValue } = req.body;
-  
+
     try {
-      console.log(id);
-      console.log(Number(id));
       await updateUserField(Number(id), field, newValue);
       res.status(200).json({ success: true, message: `User with ID ${id} updated successfully` });
     } catch (error) {

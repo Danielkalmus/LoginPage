@@ -16,6 +16,19 @@
     left: 0;
 }
 
+.top-right {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+}
+
+.top-right input {
+    text-align: left;
+    width: 250px;
+    margin: 10px;
+}
+
+
 .users-page h2 {
     color: #f943ff;
     margin-bottom: 20px;

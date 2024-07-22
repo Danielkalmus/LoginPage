@@ -2,16 +2,15 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { baseURL } from '../../../const';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
 import './accountSettings.css';
 import UserSessionContext from '../../../userSessionProvider';
-import Sidebar from './sidebar';
+import Sidebar from '../sidebar/sidebar';
 
 const Settings: React.FC = () => {
     const navigate = useNavigate();
     const { data: user, error: contextError } = useContext(UserSessionContext)!;
     const [error, setError] = useState<string | null>(contextError);
+    const [deleteError, setDeleteError] = useState<string | null>(contextError);
     const [currentPassword, setCurrentPassword] = useState('');
     const [updatedPassword, setUpdatedPassword] = useState('');
     const [confirmUpdatedPassword, setConfirmUpdatedPassword] = useState('');
@@ -28,18 +27,19 @@ const Settings: React.FC = () => {
                 params: { email: user.email }
             });
 
+            console.log(response);
             if (response.status === 200) {
                 alert('Account deleted successfully');
                 navigate('/');
             } else {
-                setError(response.data.message || 'An error occurred');
+                setDeleteError(response.data.message || 'An error occurred');
             }
         } catch (error: unknown) {
             const axiosError = error as AxiosError;
             if (axiosError.response && axiosError.response.data && (axiosError.response.data as any).message) {
-                setError((axiosError.response.data as any).message);
+                setDeleteError((axiosError.response.data as any).message);
             } else {
-                setError('An error occurred');
+                setDeleteError('An error occurred');
             }
         }
     };
@@ -48,7 +48,10 @@ const Settings: React.FC = () => {
         if (!user) return;
         if (!updatedPassword || !confirmUpdatedPassword) return;
         if (updatedPassword !== confirmUpdatedPassword) return;
-        if (currentPassword !== user.password) return;
+        if (currentPassword !== user.password) {
+            setError("The password you entered in incorrect");
+            return;
+        }
 
         try {
             const response = await axios.put(`${baseURL}/api/user/${user.id}`, {
@@ -56,15 +59,17 @@ const Settings: React.FC = () => {
                 newValue: updatedPassword
             });
 
-            if (response.status === 200) {
+            if (response.status) {
                 alert('Password updated successfully');
                 navigate('/');
             } else {
+                console.log(response.data.message);
                 setError(response.data.message || 'An error occurred');
             }
         } catch (error: unknown) {
             const axiosError = error as AxiosError;
             if (axiosError.response && axiosError.response.data && (axiosError.response.data as any).message) {
+                console.log((axiosError.response.data as any).message)
                 setError((axiosError.response.data as any).message);
             } else {
                 setError('An error occurred');
@@ -172,6 +177,7 @@ const Settings: React.FC = () => {
                                 <button type="button" onClick={handlePasswordChange}>Update Password</button>
                                 <button type="button" onClick={handlePasswordButtons}>Cancel</button>
                             </div>
+                            {error && <p style={{ color: 'red'}}>{error}</p>}
                         </div>
                     )}
                     <br />
@@ -183,9 +189,9 @@ const Settings: React.FC = () => {
                             <p>Are you sure you want to delete this account?</p>
                             <button type="button" onClick={handleDeleteAccount}>Yes</button>
                             <button type="button" onClick={handleDeleteButtons}>Cancel</button>
+                            {deleteError && <p style={{ color: 'red'}}>{deleteError}</p>}
                         </div>
                     )}
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
                 </>
             </div>
         </div>

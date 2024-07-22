@@ -1,4 +1,5 @@
-import { findUserByEmail, findUserByID, findAllUsers ,createUser, deleteUserByEmail, updateUserInfo, User } from '../repositories/userRepository';
+import { hebrewFirstNames, hebrewLastNames } from '../const';
+import { findUserByEmail, findUserByID, findAllUsers ,createUser, deleteUserByEmail, updateUserInfo, User, formatDate } from '../repositories/userRepository';
 
 const registerUser = async (user: User): Promise<void> => {
     const existingUser = await findUserByEmail(user.email);
@@ -51,7 +52,6 @@ const deleteUser = async (email: string): Promise<void> => {
         throw new Error('User does not exist');
     }
     await deleteUserByEmail(email);
-    console.log(`User with email ${email} deleted successfully`);
 }
 
 const updateUserField = async (userId: number, field: string, newValue: any) => {
@@ -59,6 +59,49 @@ const updateUserField = async (userId: number, field: string, newValue: any) => 
     console.log(`User with ID ${userId} updated successfully`);
 }
 
+
+const getRandomLetter = (): string => {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    return letters.charAt(Math.floor(Math.random() * letters.length));
+};
+
+const createRandomEmail = () => {
+    let string = '';
+    for (let index = 0; index < 6; index++) {
+        string = string + getRandomLetter();
+    }
+    return string + '@gmail.com';
+}
+
+const createRandomPassword = (): string => {
+    let string = '';
+    const charachters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
+    for (let index = 0; index < 6; index++) {
+        string = string + charachters.charAt(Math.floor(Math.random() * charachters.length))
+    }
+    return string;
+}
+
+const getRandomDate = (): string => {
+    const start = new Date(1940, 0, 1).getTime();
+    const end = new Date(2014, 0, 1).getTime();
+    const randomTimestamp = Math.floor(Math.random() * (end - start)) + start;
+    return formatDate(new Date(randomTimestamp));
+}
+
+const getRandomIndex = (arrayLength: number): number => {
+    return Math.floor(Math.random() * arrayLength);
+  };
+
+const newUser = () => {
+    for (let index = 0; index < 10; index++) {
+        registerUser({email: createRandomEmail(), 
+            password: createRandomPassword(), 
+            firstName: hebrewFirstNames[getRandomIndex(hebrewFirstNames.length)], 
+            lastName: hebrewLastNames[getRandomIndex(hebrewLastNames.length)], 
+            birthday: getRandomDate()} as User);        
+    }
+}
 export {
     registerUser,
     getUserByEmail,
@@ -66,5 +109,6 @@ export {
     getAllUsers,
     authenticateUser,
     deleteUser,
-    updateUserField
+    updateUserField,
+    newUser
 };
