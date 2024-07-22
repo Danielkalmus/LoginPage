@@ -1,0 +1,90 @@
+/* CreateAccount.css */
+/*
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ced0cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}*/
+
+.create-account-container {
+  background-color: #abb0ad;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.create-account-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.create-account-container div {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.create-account-container input[type="text"],
+.create-account-container input[type="email"],
+.create-account-container input[type="password"],
+.create-account-container input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.create-account-container .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.create-account-container .react-datepicker__input-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.create-account-container button[type="submit"],
+.create-account-container button {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.create-account-container button[type="submit"]:hover,
+.create-account-container button:hover {
+  background-color: #818582;
+}
+
+.create-account-container p {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.create-account-container .login-redirect {
+  color:#000000;
+  text-align: center;
+  margin-top: 20px;
+}
+.create-account-container .login-redirect .link-login {
+  color:#696c6a;
+  text-align: center;
+  margin-top: 20px;
+}

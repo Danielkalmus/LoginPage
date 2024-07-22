@@ -1,0 +1,112 @@
+/* Login.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ced0cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.login-container {
+  background-color: #abb0ad;
+  padding: 40px;
+  border-radius: 10px;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+
+}
+
+.login-container div {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.login-container input[type="email"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.login-container button[type="submit"],
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+}
+
+
+.login-container button:hover {
+  background-color: #696c6a;
+}
+
+.login-button.valid:hover {
+  background-color: #696c6a;
+}
+
+.login-button:disabled:hover {
+  background-color: #a39f9f;
+  cursor: not-allowed;
+}
+
+.login-button:disabled {
+  background-color: #a39f9f
+}
+
+.login-button.valid {
+  background-color: #4b4f4c;
+}
+
+.login-container p {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.login-container .create-account {
+  color:#000000;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-container .create-account .link-create-account {
+  color:#696c6a;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.see-all-users button {
+  background-color: #696c6a;
+}
+
+.see-all-users button:hover {
+  background-color: #818582;
+}
+
+.generate-users button {
+  background-color: #696c6a;
+}
+
+.generate-users button:hover {
+  background-color: #818582;
+}
