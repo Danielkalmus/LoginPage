@@ -22,22 +22,43 @@ db.connect((err: QueryError | null) => {
     process.exit(1);
   }
   console.log('MySQL Connected...');
-  db.query(`CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) UNIQUE,
-    password VARCHAR(255),
-    firstName VARCHAR(255),
-    lastName VARCHAR(255),
-    dateOfBirth DATE
-  )`, (err: QueryError | null) => {
+
+  const createUsersTableQuery = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(255) UNIQUE,
+      password VARCHAR(255),
+      firstName VARCHAR(255),
+      lastName VARCHAR(255),
+      dateOfBirth DATE
+    )`;
+
+  const createCompaniesTableQuery = `
+    CREATE TABLE IF NOT EXISTS companies (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255),
+      address VARCHAR(255),
+      totalEmployees INT DEFAULT 0
+    )`;
+
+  db.query(createUsersTableQuery, (err: QueryError | null) => {
     if (err) {
       console.error('Error creating users table:', err);
       process.exit(1);
     }
     console.log('Users table created or already exists');
   });
+
+  db.query(createCompaniesTableQuery, (err: QueryError | null) => {
+    if (err) {
+      console.error('Error creating companies table:', err);
+      process.exit(1);
+    }
+    console.log('Companies table created or already exists');
+  });
 });
 
+// Endpoint to get all users
 app.get('/users', (req: Request, res: Response) => {
   db.query('SELECT * FROM users', (err: QueryError | null, result: any) => {
     if (err) return res.status(500).send('Error fetching users');
@@ -45,6 +66,7 @@ app.get('/users', (req: Request, res: Response) => {
   });
 });
 
+// Endpoint to register a new user
 app.post('/register', (req: Request, res: Response) => {
   const { email, password, firstName, lastName, dateOfBirth } = req.body;
   if (!email || !password || !firstName || !lastName || !dateOfBirth) {
@@ -64,6 +86,7 @@ app.post('/register', (req: Request, res: Response) => {
   );
 });
 
+// Endpoint to generate multiple users
 app.post('/UsersGenerator', (req: Request, res: Response) => {
   const users = req.body;
   if (!Array.isArray(users) || users.length === 0) {
@@ -87,6 +110,7 @@ app.post('/UsersGenerator', (req: Request, res: Response) => {
   );
 });
 
+// Endpoint to login a user
 app.post('/login', (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).send('Email and password are required');
@@ -106,6 +130,7 @@ app.post('/login', (req: Request, res: Response) => {
   });
 });
 
+// Endpoint to change a user's password
 app.post('/changePassword', (req: Request, res: Response) => {
   const { userId, oldPassword, newPassword } = req.body;
 
@@ -126,7 +151,7 @@ app.post('/changePassword', (req: Request, res: Response) => {
   });
 });
 
-// Endpoint to delete user account
+// Endpoint to delete a user account
 app.post('/delete-account', (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -145,6 +170,52 @@ app.post('/delete-account', (req: Request, res: Response) => {
       res.status(200).send('User account deleted successfully');
     });
   });
+});
+
+// Endpoint to get all companies
+app.get('/companies', (req: Request, res: Response) => {
+  db.query('SELECT * FROM companies', (err: QueryError | null, result: any) => {
+    if (err) return res.status(500).send('Error fetching companies');
+    res.status(200).json({ result });
+  });
+});
+
+// Endpoint to add a new company
+app.post('/companies', (req: Request, res: Response) => {
+  const { name, address } = req.body;
+  if (!name || !address) {
+    return res.status(400).send('Name and address are required');
+  }
+
+  db.query(
+    'INSERT INTO companies (name, address) VALUES (?, ?)',
+    [name, address],
+    (err: QueryError | null) => {
+      if (err) return res.status(500).send('Error inserting company');
+      res.status(201).send('Company added successfully');
+    }
+  );
+});
+
+// Endpoint to handle batch insertion of companies
+app.post('/CompaniesGenerator', (req: Request, res: Response) => {
+  const companies = req.body;
+  if (!Array.isArray(companies) || companies.length === 0) {
+    return res.status(400).send('Invalid input');
+  }
+
+  const values = companies.map(company => [
+    company.name, company.address, company.totalEmployees
+  ]);
+
+  db.query(
+    'INSERT INTO companies (name, address, totalEmployees) VALUES ?',
+    [values],
+    (err: QueryError | null) => {
+      if (err) return res.status(500).send('Error inserting companies');
+      res.status(201).send('Companies registered successfully');
+    }
+  );
 });
 
 app.listen(port, () => {

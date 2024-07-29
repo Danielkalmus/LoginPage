@@ -12,6 +12,9 @@ const names: string[] = [
   "David",
   "Laura",
   "Daniel",
+  "Lea",
+  "Rivka",
+  "Rachel",
 ];
 
 function getRandomInt(min: number, max: number): number {

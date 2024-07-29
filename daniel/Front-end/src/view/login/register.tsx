@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ArrowButton from "../components/ArrowButton";
-import { GenerateRandomUsers } from "../generateUsers";
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,7 +13,6 @@ const Register: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [firstNameError, setFirstNameError] = useState<string>("");
   const [lastNameError, setLastNameError] = useState<string>("");
-  const [numberOfUsers, setNumberOfUsers] = useState<number>();
 
   const navigate = useNavigate();
 
@@ -106,19 +104,6 @@ const Register: React.FC = () => {
     }
   };
 
-  const handleGenerateUsers = async () => {
-    const users = numberOfUsers ? GenerateRandomUsers(numberOfUsers) : [];
-    try {
-      await axios.post("http://localhost:3000/UsersGenerator", users);
-      alert(numberOfUsers + " users created successfully");
-      navigate("/");
-    } catch (error: any) {
-      setError(
-        error.response?.data || "An error occurred during bulk registration"
-      );
-    }
-  };
-
   return (
     <div>
       <ArrowButton />
@@ -184,19 +169,10 @@ const Register: React.FC = () => {
         />
         <br />
         <button type="submit">Register</button>
-      </form>
-      <p>Maximum 110 users at once</p>
-      <input
-        placeholder="Number of users"
-        type="number"
-        value={numberOfUsers}
-        onChange={(e) => setNumberOfUsers(parseInt(e.target.value))}
-        required
-      />
-      <br />
-      <button onClick={handleGenerateUsers}>
-        Generate {numberOfUsers} Users
-      </button>
+      </form><br />
+      <a onClick={() => navigate("/login")}>
+        Already have an account? Login
+      </a>
     </div>
   );
 };
