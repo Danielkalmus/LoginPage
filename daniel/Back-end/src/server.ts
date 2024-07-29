@@ -66,6 +66,16 @@ app.get('/users', (req: Request, res: Response) => {
   });
 });
 
+// Endpoint to get a single user by ID
+app.get('/users/:userId', (req: Request, res: Response) => {
+  const userId = req.params.userId;
+  db.query('SELECT * FROM users WHERE id = ?', [userId], (err: QueryError | null, result: any) => {
+    if (err) return res.status(500).send('Error fetching user');
+    if (result.length === 0) return res.status(404).send('User not found');
+    res.status(200).json(result[0]);
+  });
+});
+
 // Endpoint to register a new user
 app.post('/register', (req: Request, res: Response) => {
   const { email, password, firstName, lastName, dateOfBirth } = req.body;
@@ -130,11 +140,11 @@ app.post('/login', (req: Request, res: Response) => {
   });
 });
 
-// Endpoint to change a user's password
-app.post('/changePassword', (req: Request, res: Response) => {
-  const { userId, oldPassword, newPassword } = req.body;
+// Endpoint to update user information
+app.post('/updateUser', (req: Request, res: Response) => {
+  const { userId, oldPassword, newPassword, email, firstName, lastName, dateOfBirth } = req.body;
 
-  if (!userId || !oldPassword || !newPassword) {
+  if (!userId || !oldPassword || !newPassword || !email || !firstName || !lastName || !dateOfBirth) {
     return res.status(400).send('All fields are required');
   }
 
@@ -144,10 +154,22 @@ app.post('/changePassword', (req: Request, res: Response) => {
 
     if (oldPassword !== result[0].password) return res.status(401).send('Old password incorrect');
 
-    db.query('UPDATE users SET password = ? WHERE id = ?', [newPassword, userId], (err: QueryError | null) => {
-      if (err) return res.status(500).send('Error updating password');
-      res.status(200).send('Password changed successfully');
-    });
+    const updateUserQuery = `
+      UPDATE users 
+      SET email = ?, password = ?, firstName = ?, lastName = ?, dateOfBirth = ? 
+      WHERE id = ?`;
+
+    db.query(
+      updateUserQuery,
+      [email, newPassword, firstName, lastName, dateOfBirth, userId],
+      (err: QueryError | null) => {
+        if (err) {
+          if (err.code === 'ER_DUP_ENTRY') return res.status(409).send('Email already exists');
+          return res.status(500).send('Error updating user');
+        }
+        res.status(200).send('User information updated successfully');
+      }
+    );
   });
 });
 

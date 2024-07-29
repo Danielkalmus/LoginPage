@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ArrowButton from "../components/ArrowButton";
 
-const Register: React.FC = () => {
+interface User {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+}
+
+interface LocationState {
+  userId?: string;
+  mode?: "register" | "update";
+}
+
+const RegisterOrUpdate: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [oldPassword, setOldPassword] = useState<string>(""); // State for old password
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [dateOfBirth, setDateOfBirth] = useState<string>("");
@@ -15,13 +28,31 @@ const Register: React.FC = () => {
   const [lastNameError, setLastNameError] = useState<string>("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { userId, mode = "register" } = (location.state as LocationState) || {};
+
+  useEffect(() => {
+    if (mode === "update" && userId) {
+      axios
+        .get<User>(`http://localhost:3000/users/${userId}`)
+        .then((response) => {
+          const user = response.data;
+          setEmail(user.email);
+          setFirstName(user.firstName);
+          setLastName(user.lastName);
+          setDateOfBirth(user.dateOfBirth);
+        })
+        .catch(() => {
+          setError("Error fetching user data");
+        });
+    }
+  }, [mode, userId]);
 
   const calculateAge = (dob: string): number => {
     const birthDate = new Date(dob);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDifference = today.getMonth() - birthDate.getMonth();
-
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && today.getDate() < birthDate.getDate())
@@ -31,17 +62,17 @@ const Register: React.FC = () => {
     return age;
   };
 
-  const handleCreation = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
     if (!/^[א-ת]+$/.test(firstName)) {
-      setError("First name can only contain Hebrew letters");
+      setFirstNameError("First name can only contain Hebrew letters");
       return;
     }
 
     if (!/^[א-ת]+$/.test(lastName)) {
-      setError("Last name can only contain Hebrew letters");
+      setLastNameError("Last name can only contain Hebrew letters");
       return;
     }
 
@@ -66,21 +97,43 @@ const Register: React.FC = () => {
     }
 
     if (calculateAge(dateOfBirth) < 18) {
-      setError("You must be at least 18 years old to register");
+      setError("You must be at least 18 years old");
       return;
     }
 
     try {
-      await axios.post("http://localhost:3000/register", {
-        email,
-        password,
-        firstName,
-        lastName,
-        dateOfBirth,
-      });
-      navigate("/");
+      if (mode === "update") {
+        if (!oldPassword) {
+          setError("Old password is required for updates");
+          return;
+        }
+
+        await axios.post("http://localhost:3000/updateUser", {
+          userId: userId, // Ensure this is not undefined
+          oldPassword: oldPassword,
+          newPassword: password,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          dateOfBirth: dateOfBirth,
+        });
+        navigate("/home", { state: { firstName, lastName, userId } });
+      } else {
+        await axios.post("http://localhost:3000/register", {
+          email,
+          password,
+          firstName,
+          lastName,
+          dateOfBirth,
+        });
+        navigate("/");
+      }
     } catch (error: any) {
-      setError(error.response ? error.response.data : "Error creating account");
+      if (error.response) {
+        setError(error.response.data);
+      } else {
+        setError("Error processing request");
+      }
     }
   };
 
@@ -108,12 +161,16 @@ const Register: React.FC = () => {
     <div>
       <ArrowButton />
       <img
-        src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/register-14.png"
+        src={
+          mode === "update"
+            ? "https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/account-management-18.png"
+            : "https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/register-14.png"
+        }
         alt="register"
       />
-      <h2>Register Page</h2>
+      <h2>{mode === "update" ? "Update User" : "Register"}</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleCreation}>
+      <form onSubmit={handleSubmit}>
         <input
           placeholder="First Name"
           value={firstName}
@@ -145,13 +202,23 @@ const Register: React.FC = () => {
         />
         <br />
         <input
-          placeholder="New Email"
+          placeholder="Email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
         <br />
+        {mode === "update" && (
+          <input
+            placeholder="Old Password"
+            type="password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            required
+          />
+        )}
+        {mode === "update" && <br />}
         <input
           placeholder="New Password"
           type="password"
@@ -168,13 +235,19 @@ const Register: React.FC = () => {
           required
         />
         <br />
-        <button type="submit">Register</button>
-      </form><br />
-      <a onClick={() => navigate("/login")}>
-        Already have an account? Login
-      </a>
+        <button type="submit">
+          {mode === "update" ? "Update" : "Register"}
+        </button>
+      </form>
+      {mode === "register" && (
+        <div>
+          <a onClick={() => navigate("/login")}>
+            Already have an account? Login
+          </a>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Register;
+export default RegisterOrUpdate;

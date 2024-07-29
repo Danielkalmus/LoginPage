@@ -64,7 +64,7 @@ const Login: React.FC = () => {
       <br />
       <button onClick={handleLogin}>Log In</button> <br />
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} <br />
-      <a onClick={() => navigate("/register")}>
+      <a onClick={() => navigate("/RegisterOrUpdate")}>
         Don't have an account? Register
       </a>
     </div>
