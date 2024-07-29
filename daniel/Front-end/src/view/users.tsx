@@ -12,6 +12,7 @@ export interface User {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  company?: string;
 }
 
 const Users: React.FC = () => {
@@ -149,7 +150,7 @@ const Users: React.FC = () => {
               <td>{user.lastName}</td>
               <td>{format(new Date(user.dateOfBirth), "dd/MM/yyyy")}</td>
               <td>{user.company}</td>
-              <td><EllipsisMenu/></td>
+              <td><EllipsisMenu userId={user.id} /></td>
             </tr>
           ))}
         </tbody>

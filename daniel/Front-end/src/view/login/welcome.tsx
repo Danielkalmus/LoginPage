@@ -10,7 +10,7 @@ const Welcome: React.FC = () => {
       <h1>Welcome</h1>
       <button onClick={() => navigate("/login")}>LogIn</button>
       <br />
-      <button onClick={() => navigate("/register")}>Register</button>
+      <button onClick={() => navigate("/RegisterOrUpdate")}>Register</button>
       <br />
       <button onClick={() => navigate("/tables")}>Information Tables</button>
     </div>
