@@ -22,7 +22,7 @@ const Home: React.FC = () => {
       />
       <h1>Home page</h1>
       <h2>Welcome, {firstName} {lastName}!</h2>
-      <button onClick={() => navigate("/RegisterOrUpdate", { state: { firstName, lastName, id } })}>Update User</button><br />
+      <button onClick={() => navigate("/RegisterOrUpdate", { state: { firstName, lastName, id, mode: "update" } })}>Update User</button><br />
       <button onClick={() => navigate("/DeleteAccount", { state: { firstName, lastName, id } })}>Delete Account</button><br />
       <button onClick={() => navigate("/")}>Log Out</button>
     </div>
