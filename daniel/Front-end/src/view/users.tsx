@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ArrowButton from "./components/ArrowButton";
 import { format } from "date-fns";
-import { GenerateRandomUsers } from "./generateUsers";
-import EllipsisMenu from "./login/EllipsisMenu";
+import { GenerateRandomUsers } from "./components/generateUsers";
+import EllipsisMenu from "./components/EllipsisMenu";
 
 export interface User {
   id: number;

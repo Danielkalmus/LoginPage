@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ArrowButton from "./components/ArrowButton";
-import CompaniesGenerator from "./generateCompanies";
+import CompaniesGenerator from "./components/generateCompanies";
 
 export interface Company {
   id: number;
