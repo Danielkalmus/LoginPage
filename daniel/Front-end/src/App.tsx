@@ -8,6 +8,8 @@ import Users from "./view/users";
 import Register from "./view/login/register";
 import ChangePassword from "./view/login/changePassword";
 import DeleteAccount from "./view/login/DeleteAccount";
+import Tables from "./view/tables";
+import Companies from "./view/companies";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +22,8 @@ const App: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/DeleteAccount" element={<DeleteAccount />} />
+        <Route path="/companies" element={<Companies />} />
+        <Route path="/tables" element={<Tables />} />
       </Routes>
     </BrowserRouter>
   );

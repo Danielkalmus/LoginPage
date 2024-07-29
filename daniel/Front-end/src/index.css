@@ -54,7 +54,7 @@ button {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 2px 7px 5px rgba(0, 0, 0, 0.2); 
   margin: 5px;
-  min-width: 200px;
+  width: 200px;
 }
 button:hover {
   background-color: #A0522D; 
@@ -83,7 +83,7 @@ table {
 th, td {
   border: 1px solid black;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 th {
@@ -91,6 +91,9 @@ th {
   color: white;
 }
 
-td {
+tr:nth-child(odd) {
   background-color: #FAF3E0; 
+}
+tr:nth-child(even) {
+  background-color: #e2dbc5; 
 }

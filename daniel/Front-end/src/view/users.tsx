@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ArrowButton from "./components/ArrowButton";
 import { format } from "date-fns";
+import { GenerateRandomUsers } from "./generateUsers";
+import EllipsisMenu from "./login/EllipsisMenu";
 
 export interface User {
   id: number;
@@ -19,6 +21,7 @@ const Users: React.FC = () => {
   const [sortByYoungToOld, setSortByYoungToOld] = useState<boolean>(false);
   const [sortByOldToYoung, setSortByOldToYoung] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [numberOfUsers, setNumberOfUsers] = useState<number>();
   const usersPerPage = 20;
 
   useEffect(() => {
@@ -60,19 +63,33 @@ const Users: React.FC = () => {
 
   const sortedUsers = sortByYoungToOld
     ? [...filteredUsers].sort(
-        (a, b) => new Date(a.dateOfBirth).getTime() - new Date(b.dateOfBirth).getTime()
+        (a, b) =>
+          new Date(a.dateOfBirth).getTime() - new Date(b.dateOfBirth).getTime()
       )
     : sortByOldToYoung
     ? [...filteredUsers].sort(
-        (a, b) => new Date(b.dateOfBirth).getTime() - new Date(a.dateOfBirth).getTime()
+        (a, b) =>
+          new Date(b.dateOfBirth).getTime() - new Date(a.dateOfBirth).getTime()
       )
     : filteredUsers;
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
-
   const totalPages = Math.ceil(sortedUsers.length / usersPerPage);
+
+  const handleGenerateUsers = async () => {
+    const users = numberOfUsers ? GenerateRandomUsers(numberOfUsers) : [];
+    try {
+      await axios.post("http://localhost:3000/UsersGenerator", users);
+      alert(numberOfUsers + " users created successfully");
+      window.location.reload();
+    } catch (error: any) {
+      setError(
+        error.response?.data || "An error occurred during bulk registration"
+      );
+    }
+  };
 
   return (
     <div>
@@ -83,6 +100,17 @@ const Users: React.FC = () => {
         alt="users"
       />
       <h2>Users List</h2>
+      <input
+        placeholder="Number of users"
+        type="number"
+        value={numberOfUsers}
+        onChange={(e) => setNumberOfUsers(parseInt(e.target.value))}
+        required
+      />
+      <button onClick={handleGenerateUsers}>
+        Generate {numberOfUsers} Users
+      </button>
+      <br />
       <input
         type="text"
         placeholder="🔍Search"
@@ -107,6 +135,8 @@ const Users: React.FC = () => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Date Of Birth</th>
+            <th>Company</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -118,6 +148,8 @@ const Users: React.FC = () => {
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{format(new Date(user.dateOfBirth), "dd/MM/yyyy")}</td>
+              <td>{user.company}</td>
+              <td><EllipsisMenu/></td>
             </tr>
           ))}
         </tbody>
