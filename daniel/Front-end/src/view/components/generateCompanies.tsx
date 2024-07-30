@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 interface Company {
-  id: number;
+  companyId: number;
   name: string;
   address: string;
   totalEmployees: number;
@@ -63,7 +63,7 @@ const GenerateRandomCompanies = (count: number): Company[] => {
     const totalEmployees = 0;
 
     const company: Company = {
-      id: i + 1,
+      companyId: i + 1,
       name,
       address,
       totalEmployees,
@@ -80,8 +80,9 @@ const CompaniesGenerator: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerateCompanies = async () => {
-
-    const companies = numberOfCompanies ? GenerateRandomCompanies(numberOfCompanies) : [];
+    const companies = numberOfCompanies
+      ? GenerateRandomCompanies(numberOfCompanies)
+      : [];
     try {
       await axios.post("http://localhost:3000/CompaniesGenerator", companies);
       alert(numberOfCompanies + " Companies created successfully!");
@@ -101,11 +102,12 @@ const CompaniesGenerator: React.FC = () => {
           onChange={(e) => setNumberOfCompanies(parseInt(e.target.value) || 0)}
         />
       </label>
-      <button onClick={handleGenerateCompanies}>Generate {numberOfCompanies} Companies</button>
+      <button onClick={handleGenerateCompanies}>
+        Generate {numberOfCompanies} Companies
+      </button>
       {error && <p>{error}</p>}
     </div>
   );
 };
 
 export default CompaniesGenerator;
-

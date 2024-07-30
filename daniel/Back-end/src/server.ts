@@ -35,7 +35,7 @@ db.connect((err: QueryError | null) => {
 
   const createCompaniesTableQuery = `
     CREATE TABLE IF NOT EXISTS companies (
-      id INT AUTO_INCREMENT PRIMARY KEY,
+      companyId INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255),
       address VARCHAR(255),
       totalEmployees INT DEFAULT 0
