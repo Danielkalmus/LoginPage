@@ -6,7 +6,7 @@ import { GenerateRandomUsers } from "./components/generateUsers";
 import EllipsisMenu from "./components/EllipsisMenu";
 
 export interface User {
-  id: number;
+  userId: number;
   email: string;
   password: string;
   firstName: string;
@@ -142,15 +142,17 @@ const Users: React.FC = () => {
         </thead>
         <tbody>
           {currentUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
+            <tr key={user.userId}>
+              <td>{user.userId}</td>
               <td>{user.email}</td>
               <td>{user.password}</td>
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{format(new Date(user.dateOfBirth), "dd/MM/yyyy")}</td>
               <td>{user.company}</td>
-              <td><EllipsisMenu userId={user.id} /></td>
+              <td>
+                <EllipsisMenu userId={user.userId} />
+              </td>
             </tr>
           ))}
         </tbody>
