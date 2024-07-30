@@ -3,15 +3,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ArrowButton from "./components/ArrowButton";
 
 interface LocationState {
+  userId: number;
   firstName: string;
   lastName: string;
-  id: number;
 }
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { firstName, lastName, id } = location.state as LocationState;
+  const { userId, lastName, firstName } = location.state as LocationState;
 
   return (
     <div>
@@ -21,12 +21,30 @@ const Home: React.FC = () => {
         alt="user"
       />
       <h1>Home page</h1>
-      <h2>Welcome, {firstName} {lastName}!</h2>
-      <button onClick={() => navigate("/RegisterOrUpdate", { state: { firstName, lastName, id, mode: "update" } })}>Update User</button><br />
-      <button onClick={() => navigate("/DeleteAccount", { state: { firstName, lastName, id } })}>Delete Account</button><br />
+      <h2>
+        Welcome, {firstName} {lastName}!
+      </h2>
+      <button
+        onClick={() =>
+          navigate("/RegisterOrUpdate", {
+            state: { firstName, lastName, userId, mode: "update" },
+          })
+        }
+      >
+        Update User
+      </button>
+      <br />
+      <button
+        onClick={() =>
+          navigate("/DeleteAccount", { state: { firstName, lastName, userId } })
+        }
+      >
+        Delete Account
+      </button>
+      <br />
       <button onClick={() => navigate("/")}>Log Out</button>
     </div>
   );
-}
+};
 
 export default Home;
