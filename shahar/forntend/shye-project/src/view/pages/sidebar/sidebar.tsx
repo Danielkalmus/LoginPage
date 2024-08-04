@@ -7,7 +7,6 @@ import { SidebarData } from "./sidebarData";
 import SubMenu from "./subMenu";
 import { IconContext } from "react-icons/lib";
 import './sidebar.css';
-import { User } from "./home";
 
 
 const Nav = styled.div`
