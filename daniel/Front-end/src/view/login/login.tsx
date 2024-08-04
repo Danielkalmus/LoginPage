@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ArrowButton from "../components/ArrowButton";
 
 interface LoginResponse {
-  id: number;
+  userId: number;
   firstName: string;
   lastName: string;
 }
@@ -17,13 +17,16 @@ const Login: React.FC = () => {
 
   const handleLogin = async (): Promise<void> => {
     try {
-      const response = await axios.post<LoginResponse>("http://localhost:3000/login", {
-        email,
-        password,
-      });
+      const response = await axios.post<LoginResponse>(
+        "http://localhost:3000/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      const { id, firstName, lastName } = response.data;
-      navigate("/home", { state: { firstName, lastName, id } });
+      const { userId, firstName, lastName } = response.data;
+      navigate("/home", { state: { firstName, lastName, userId } });
     } catch (error: any) {
       if (
         error.response &&
@@ -64,7 +67,7 @@ const Login: React.FC = () => {
       <br />
       <button onClick={handleLogin}>Log In</button> <br />
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} <br />
-      <a onClick={() => navigate("/register")}>
+      <a onClick={() => navigate("/RegisterOrUpdate")}>
         Don't have an account? Register
       </a>
     </div>

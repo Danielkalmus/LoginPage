@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ArrowButton from "./components/ArrowButton";
 import { format } from "date-fns";
-import { GenerateRandomUsers } from "./generateUsers";
-import EllipsisMenu from "./login/EllipsisMenu";
+import { GenerateRandomUsers } from "./components/generateUsers";
+import EllipsisMenu from "./components/EllipsisMenu";
 
 export interface User {
-  id: number;
+  userId: number;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  company?: string;
 }
 
 const Users: React.FC = () => {
@@ -141,15 +142,17 @@ const Users: React.FC = () => {
         </thead>
         <tbody>
           {currentUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
+            <tr key={user.userId}>
+              <td>{user.userId}</td>
               <td>{user.email}</td>
               <td>{user.password}</td>
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{format(new Date(user.dateOfBirth), "dd/MM/yyyy")}</td>
               <td>{user.company}</td>
-              <td><EllipsisMenu/></td>
+              <td>
+                <EllipsisMenu userId={user.userId} />
+              </td>
             </tr>
           ))}
         </tbody>

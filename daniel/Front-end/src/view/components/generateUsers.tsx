@@ -1,4 +1,4 @@
-import { User } from "./users";
+import { User } from "../users";
 
 const names: string[] = [
   "John",
@@ -53,7 +53,7 @@ export const GenerateRandomUsers = (count: number): User[] => {
       .split("T")[0];
 
     const user: User = {
-      id: i + 1,
+      userId: i + 1,
       email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
       password: Math.random().toString(36).substring(2, 8),
       firstName: firstName,

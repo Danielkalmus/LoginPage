@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ArrowButton from "./components/ArrowButton";
-import CompaniesGenerator from "./generateCompanies";
+import CompaniesGenerator from "./components/generateCompanies";
 
 export interface Company {
-  id: number;
+  companyId: number;
   name: string;
   address: string;
   totalEmployees: number;
@@ -55,7 +55,10 @@ const Companies: React.FC = () => {
 
   const indexOfLastCompany = currentPage * companiesPerPage;
   const indexOfFirstCompany = indexOfLastCompany - companiesPerPage;
-  const currentCompanies = sortedCompanies.slice(indexOfFirstCompany, indexOfLastCompany);
+  const currentCompanies = sortedCompanies.slice(
+    indexOfFirstCompany,
+    indexOfLastCompany
+  );
 
   const totalPages = Math.ceil(sortedCompanies.length / companiesPerPage);
 
@@ -92,8 +95,8 @@ const Companies: React.FC = () => {
         </thead>
         <tbody>
           {currentCompanies.map((company) => (
-            <tr key={company.id}>
-              <td>{company.id}</td>
+            <tr key={company.companyId}>
+              <td>{company.companyId}</td>
               <td>{company.name}</td>
               <td>{company.address}</td>
               <td>{company.totalEmployees}</td>

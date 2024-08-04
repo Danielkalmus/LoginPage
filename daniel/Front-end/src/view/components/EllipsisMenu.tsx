@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const EllipsisMenu: React.FC = () => {
+interface EllipsisMenuProps {
+  userId: number;
+}
+
+const EllipsisMenu: React.FC<EllipsisMenuProps> = ({ userId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -39,9 +43,9 @@ const EllipsisMenu: React.FC = () => {
       >
         <img
           height={"40px"}
-          src="https://icons.veryicon.com/png/128/miscellaneous/hang/more-three-points.png"
-          alt=""
-        />{" "}
+          src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/more-to-circle.png"
+          alt="More"
+        />
       </button>
       {isOpen && (
         <div
@@ -54,24 +58,35 @@ const EllipsisMenu: React.FC = () => {
             zIndex: 1,
           }}
         >
-          <a
-            href="#changePassword"
-            onClick={() => navigate("/changePassword")}
+          <button
+            onClick={() => {
+              navigate(`/RegisterOrUpdate`, { state: { userId, mode: "update" } });
+              setIsOpen(false);
+            }}
             style={{
               color: "black",
               padding: "12px 16px",
               display: "block",
+              cursor: "pointer",
             }}
           >
-            Change Password 🛠
-          </a>
-          <a
-            href="#deleteAccount"
-            onClick={() => navigate("/DeleteAccount")}
+            Update User{" "} 
+            <img
+              height={"20px"}
+              src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/modify-37.png"
+              alt="Update"
+            />
+          </button>
+          <button
+            onClick={() => {
+              navigate(`/DeleteAccount`, { state: { userId } });
+              setIsOpen(false);
+            }}
             style={{
               color: "black",
               padding: "12px 16px",
               display: "block",
+              cursor: "pointer",
             }}
           >
             Delete Account{" "}
@@ -80,7 +95,7 @@ const EllipsisMenu: React.FC = () => {
               src="https://icons.veryicon.com/png/128/miscellaneous/esgcc-basic-icon-library/delete-448.png"
               alt="Delete"
             />
-          </a>
+          </button>
         </div>
       )}
     </>
