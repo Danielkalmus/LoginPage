@@ -1,5 +1,6 @@
 {
-  "name": "daniel",
+  "name": "LoginPage",
+  "homepage": "https://danielkalmus.github.io/LoginPage/",
   "private": true,
   "version": "0.0.0",
   "proxy": "http://localhost:3000",
